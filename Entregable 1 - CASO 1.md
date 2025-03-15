@@ -53,5 +53,9 @@ Imagina un asistente personal que no solo recuerda tus pagos recurrentes, sino q
    - Debe gestionar la facturación y renovación automática de suscripciones.
 
 ---
+### ARCHIVOS DE ENTREGA
 
-***DIAGRAMA EN FORMATO PDF : [DIAGRAMA FISICO DE BASES DE DATOS](https://github.com/carayac/CASO-1---Entregable-/blob/main/DIAGRAMA%20CASO%201.pdf)
+   **DIAGRAMA EN FORMATO PDF : [DIAGRAMA FISICO DE BASES DE DATOS](https://github.com/carayac/CASO-1---Entregable-/blob/main/DIAGRAMA%20CASO%201.pdf)**
+   
+   
+   **DOCUMENTACION : [DOCUMENTACION DEL DISEÑO CASO 1]()**
