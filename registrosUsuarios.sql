@@ -197,4 +197,57 @@ DELIMITER ;
 
 call insertUserRoles();
 
-select * from payment_userRoles
+-- INFORMACION DE CONTACTO
+
+INSERT INTO payment_contactInfoTypes(contactInfoTypeId, name)
+VALUES (1,"Email"),(2,"Numero Telefonico");
+
+-- Informacion de contacto a los usuarios se enlaza el EMAIL
+
+DELIMITER //
+
+CREATE PROCEDURE insertEmails()
+BEGIN
+
+	SET @i = 1;
+    
+    WHILE @i <=31 DO
+    
+		-- Declaro variables locales
+        SET @firstName = '';
+        SET @lastName = '';
+        SET @userId = 0;
+        
+        
+        -- Selecciono  payment_users
+        SELECT firstName, lastName, userId 
+        INTO @firstName, @lastName, @userId
+        FROM payment_users p 
+        WHERE userId = @i;
+        
+        -- Creo el email
+        SET @email=CONCAT(@firstname,".",@lastname,".",@i,"@gmail.com");
+        
+        INSERT INTO payment_contactsUserInfo(value,lastUpdate,enabled,FK_contactInfoTypesId,FK_userId)
+        VALUES(@email,now(),1,1,@i);
+    
+		SET @i = @i+1;
+    END WHILE;
+
+END//
+
+DELIMITER ;
+
+call insertEmails();
+
+
+
+-- Insercion de modulos
+INSERT INTO payment_modules(name)
+VALUES("Pagos");
+
+-- ---------------------------------------INSERCION DE TABLAS RELACIONADAS CON SERVICIOS ----------------------------------------------------
+INSERT INTO payment_serviceCategories (serviceCategoryId,name)
+VALUES(1,"AYA"),(2,"SINPE"),(3,"BANCO NACIONAL");
+
+-- servicios
