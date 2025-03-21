@@ -43,50 +43,21 @@ VALUES
 ('session-67890', 'user-002', UNHEX('A1B2C3D4E5F67890'), UNHEX('0FEDCBA987654321'), '2025-03-21 11:00:00', 2);
 
 
--- procedimiento que inserta datos de sesiones de autenticacion esto para cada usuario
+-- Subscriptions
 
-DELIMITER //
+INSERT INTO `paymentdb`.`payment_subscriptions` (`subscriptionId`,`description`)
+VALUES 
+(0, 'None'),
+(1, 'Basic'),
+(2, 'Pro'),
+(3, 'Premium');
 
-CREATE PROCEDURE InsertAuthSessions()
-BEGIN
-
-	SET @i=3;
-    WHILE @i<=30 DO
-    
-		SET @session = CONCAT("session-",@i);
-        SET @externalUser = CONCAT("user-00",@i);
-        SET @lastUpdate = DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 100) DAY);
-        
-		SET @token = CONCAT(
-			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0'),
-			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0'),
-			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0'),
-			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0'),
-			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0'),
-			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0'),
-			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0'),
-			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0')
-		);
-        SET @refreshToken = CONCAT(
-			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0'),
-			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0'),
-			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0'),
-			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0'),
-			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0'),
-			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0'),
-			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0'),
-			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0')
-		);
-        
-        INSERT INTO payment_AuthSessions (sessionId, externalUser, token, refreshToken, lastUpdate, FK_authPlatformId)
-        VALUES (@session,@externalUser,UNHEX(@token),UNHEX(@refreshToken),@lastUpdate, FLOOR(1 + (RAND() * 2)));
-		
-		SET @i = @i+1;
-    END WHILE;
-
-END//
-
-DELIMITER ;
+INSERT INTO `paymentdb`.`payment_planPrices` (`planPriceId`,`amount`,`recurrencyType`,`postTime`,`FK_subscriptionId`,`FK_currencyId`)
+VALUES 
+(0, 0.00,'mensual',now(),0,1),
+(1, 3.99,'mensual',now(),1,1),
+(2, 9.99,'mensual',now(), 2,1),
+(3, 19.99,'mensual',now(),3,1);
 
 
 -- Procedimiento que inserta 30 usuarios a la base de datos por medio de datos aleatorias
