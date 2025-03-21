@@ -44,5 +44,20 @@ VALUES
 ('session-67890', 'user-002', UNHEX('A1B2C3D4E5F67890'), UNHEX('0FEDCBA987654321'), '2025-03-21 11:00:00', 2);
 
 
+-- Subscriptions
+
+INSERT INTO `paymentdb`.`payment_subscriptions` (`subscriptionId`,`description`)
+VALUES 
+(0, 'None'),
+(1, 'Basic'),
+(2, 'Pro'),
+(3, 'Premium');
+
+INSERT INTO `paymentdb`.`payment_planPrices` (`planPriceId`,`amount`,`recurrencyType`,`postTime`,`FK_subscriptionId`,`FK_currencyId`)
+VALUES 
+(0, 0.00,'mensual',now(),0,1),
+(1, 3.99,'mensual',now(),1,1),
+(2, 9.99,'mensual',now(), 2,1),
+(3, 19.99,'mensual',now(),3,1);
 
 
