@@ -60,6 +60,51 @@ VALUES
 (3, 19.99,'mensual',now(),3,1);
 
 
+-- procedimiento que inserta datos de sesiones de autenticacion esto para cada usuario
+
+DELIMITER //
+
+CREATE PROCEDURE InsertAuthSessions()
+BEGIN
+
+	SET @i=3;
+    WHILE @i<=30 DO
+    
+		SET @session = CONCAT("session-",@i);
+        SET @externalUser = CONCAT("user-00",@i);
+        SET @lastUpdate = DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 100) DAY);
+        
+		SET @token = CONCAT(
+			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0'),
+			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0'),
+			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0'),
+			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0'),
+			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0'),
+			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0'),
+			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0'),
+			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0')
+		);
+        SET @refreshToken = CONCAT(
+			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0'),
+			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0'),
+			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0'),
+			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0'),
+			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0'),
+			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0'),
+			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0'),
+			LPAD(HEX(FLOOR(RAND() * 255)), 2, '0')
+		);
+        
+        INSERT INTO payment_AuthSessions (sessionId, externalUser, token, refreshToken, lastUpdate, FK_authPlatformId)
+        VALUES (@session,@externalUser,UNHEX(@token),UNHEX(@refreshToken),@lastUpdate, FLOOR(1 + (RAND() * 2)));
+		
+		SET @i = @i+1;
+    END WHILE;
+
+END//
+
+DELIMITER ;
+
 -- Procedimiento que inserta 30 usuarios a la base de datos por medio de datos aleatorias
 
 DELIMITER //
