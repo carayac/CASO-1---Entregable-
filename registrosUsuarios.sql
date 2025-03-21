@@ -1,7 +1,7 @@
 use paymentdb;
 -- Registro de tablas relacionado con localizacion
 
-INSERT INTO `paymentdb`.`payment_Currencies` 
+INSERT INTO payment_Currencies
 VALUES 
 (1,'US Dollar', 'USD', '$'),
 (2,'Euro', 'EUR', '€'),
@@ -17,7 +17,11 @@ INSERT INTO payment_ExchangeRates (`exchangeRateid`, `startDate`, `endDate`, `ex
 (1, '2023-07-01 09:00:00', '2023-12-01 09:00:00', 0.83, TRUE, FALSE, 2, 3),
 (2, '2023-09-15 08:00:00', NULL, 74.9832, TRUE, TRUE, 1, 4),
 (3, '2023-06-01 11:30:00', '2023-11-01 11:30:00', 0.7365, TRUE, FALSE, 1, 5),
-(4, '2023-10-01 14:00:00', NULL, 22.3015, TRUE, TRUE, 1, 6);
+(4, '2023-10-01 14:00:00', NULL, 22.3015, TRUE, TRUE, 1, 6),
+(5, now(), NULL, 540, TRUE, TRUE, 1, 7),
+(6, now(), NULL, 0.0019, TRUE, TRUE, 7, 1);
+
+
 
 
 INSERT INTO `paymentdb`.`payment_Countries` (`countryId`,`FK_currencyId`,`name`,`phoneCode`)
@@ -240,6 +244,7 @@ DELIMITER ;
 
 call insertEmails();
 
+SELECT * FROM payment_contactServiceInfo;
 
 
 -- Insercion de modulos
@@ -248,6 +253,22 @@ VALUES("Pagos");
 
 -- ---------------------------------------INSERCION DE TABLAS RELACIONADAS CON SERVICIOS ----------------------------------------------------
 INSERT INTO payment_serviceCategories (serviceCategoryId,name)
-VALUES(1,"AYA"),(2,"SINPE"),(3,"BANCO NACIONAL");
+VALUES(1,"Electricidad"),(2,"Transferencia"),(3,"Suscripciones");
 
--- servicios
+-- servicios disponibles en la aplicacion
+INSERT INTO payment_services (FK_serviceCategoryId, logoURL) 
+VALUES
+(1, 'https://example.com/ice_logo.jpg'),
+(1, 'https://example.com/cfe_logo.jpg'),
+(2, 'https://example.com/sinpe_movimiento_logo.jpg'),
+(3, 'https://example.com/netflix_cr_logo.jpg');
+
+
+-- Informacion de contacto de los servicios
+INSERT INTO payment_contactServiceInfo (contactServiceInfoId, value, lastUpdate, enabled, FK_countryId, FK_serviceId, FK_contactInfoTypeId)
+VALUES
+(1, 'servicio@electricidad.cr', NOW(), 1, 1, 1, 1),
+(2, '506-1234-5678', NOW(), 1, 1, 2, 2),
+(3, 'suscripcion@netflix.cr', NOW(), 1, 2, 3, 1),
+(4, '506-9876-5432', NOW(), 1, 3, 1, 2);
+
