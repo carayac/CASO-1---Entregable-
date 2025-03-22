@@ -323,75 +323,6 @@ END //
 DELIMITER ;
 
 call InsertTransactions();
--- SELECT * FROM payment_currencies;
-
-SET FOREIGN_KEY_CHECKS = 0;
-SELECT CONCAT('TRUNCATE TABLE ', table_name, ';') 
-FROM information_schema.tables 
-WHERE table_schema = 'paymentdb';
-TRUNCATE TABLE payment_AIMessages;
-TRUNCATE TABLE payment_AIModel;
-TRUNCATE TABLE payment_AIpaymentData;
-TRUNCATE TABLE payment_AIresponse;
-TRUNCATE TABLE payment_AISetup;
-TRUNCATE TABLE payment_audioFiles;
-TRUNCATE TABLE payment_audioperuser;
-TRUNCATE TABLE payment_audiosperAI;
-TRUNCATE TABLE payment_AuthPlatforms;
-TRUNCATE TABLE payment_AuthSessions;
-TRUNCATE TABLE payment_AvailablePaymentMethods;
-TRUNCATE TABLE payment_AvailablePaymentMethodsPerService;
-TRUNCATE TABLE payment_AvailablePaymentMethodsPerUser;
-TRUNCATE TABLE payment_businesses;
-TRUNCATE TABLE payment_contactInfoTypes;
-TRUNCATE TABLE payment_contactServiceInfo;
-TRUNCATE TABLE payment_contactsUserInfo;
-TRUNCATE TABLE payment_conversationStatus;
-TRUNCATE TABLE payment_Countries;
-TRUNCATE TABLE payment_Currencies;
-TRUNCATE TABLE payment_eventTypes;
-TRUNCATE TABLE payment_ExchangeRates;
-TRUNCATE TABLE payment_featuresPerPlan;
-TRUNCATE TABLE payment_historyconversations;
-TRUNCATE TABLE payment_Languages;
-TRUNCATE TABLE payment_Logs;
-TRUNCATE TABLE payment_LogSeverity;
-TRUNCATE TABLE payment_LogSources;
-TRUNCATE TABLE payment_LogTypes;
-TRUNCATE TABLE payment_messageTypes;
-TRUNCATE TABLE payment_modules;
-TRUNCATE TABLE payment_paymentAnalysisLogs;
-TRUNCATE TABLE payment_paymentAttempts;
-TRUNCATE TABLE payment_paymentmethods;
-TRUNCATE TABLE payment_planFeatures;
-TRUNCATE TABLE payment_planLimits;
-TRUNCATE TABLE payment_planPrices;
-TRUNCATE TABLE payment_plansPerUser;
-TRUNCATE TABLE payment_reminders;
-TRUNCATE TABLE payment_reminderTypes;
-TRUNCATE TABLE payment_restrictions;
-TRUNCATE TABLE payment_roles;
-TRUNCATE TABLE payment_rolesrestrictions;
-TRUNCATE TABLE payment_scheduleDetails;
-TRUNCATE TABLE payment_scheduledPayments;
-TRUNCATE TABLE payment_schedules;
-TRUNCATE TABLE payment_serviceCategories;
-TRUNCATE TABLE payment_services;
-TRUNCATE TABLE payment_statusTypes;
-TRUNCATE TABLE payment_subscriptions;
-TRUNCATE TABLE payment_systemActionTypes;
-TRUNCATE TABLE payment_transactions;
-TRUNCATE TABLE payment_Transcriptions;
-TRUNCATE TABLE payment_TranscriptionSegments;
-TRUNCATE TABLE payment_Translations;
-TRUNCATE TABLE payment_transTypes;
-TRUNCATE TABLE payment_trasnSubTypes;
-TRUNCATE TABLE payment_userRoles;
-TRUNCATE TABLE payment_users;
-TRUNCATE TABLE payment_usersrestrictions;
-SET FOREIGN_KEY_CHECKS = 1;
-
-
 
 -- --------------------------------------- TABLAS RELACIONADAS CON HORARIOS DE PAGO ---------------------------------------
 
@@ -453,7 +384,7 @@ DELIMITER //
 -- Procedimiento para agregar pagos agendados para una suscripcion
 CREATE PROCEDURE InsertScheduledPaymentSub()
 BEGIN
-SET @i =0;
+SET @i =1;
     
     WHILE @i <= 30 DO
     
@@ -482,11 +413,11 @@ DELIMITER //
 -- Procedimiento para agregar pagos agendados para pagos miscelaneos
 CREATE PROCEDURE InsertScheduledPaymentPay()
 BEGIN
-SET @i =0;
+SET @i =1;
     WHILE @i <= 30 DO
     
 		-- Declaracion de variables
-        SET @scheduleDetailsId = FLOOR(1+RAND() * 27);               -- se elige uno de los horarios
+        SET @scheduleId = FLOOR(1 + RAND() * 27);               -- se elige uno de los horarios
         SET @FK_userId = 0;  
         SET @FK_serviceId = FLOOR(1 + RAND() * 4);                   -- se elige alguno de los 4 servicios
 		SET @amount = RAND() * 500;
@@ -494,9 +425,9 @@ SET @i =0;
         
         SELECT userId INTO @FK_userId FROM payment_users WHERE userId = @i;
 
-	INSERT INTO payment_scheduledPayments (scheduleDetailsId, userId, serviceId, amount, currencyId)
+	INSERT INTO payment_scheduledPayments (scheduleId, userId, serviceId, amount, currencyId)
         VALUES 
-        (@scheduleDetailsId, @FK_userId, @FK_serviceId, @amount, @currencyId);  
+        (@scheduleId, @FK_userId, @FK_serviceId, @amount, @currencyId);  
         
         SET @i = @i + 1;
     END WHILE;
@@ -526,7 +457,7 @@ DELIMITER //
 -- Procedimiento para asociar usuarios a un plan
 CREATE PROCEDURE InsertPlanPerUser()
 BEGIN
-    SET @i =0;
+    SET @i =1;
     
     WHILE @i <= 30 DO
     
@@ -550,6 +481,8 @@ BEGIN
 END //
 
 DELIMITER ;
+
+call InsertPlanPerUser();
 
 -- --------------------------------------- TABLAS RELACIONADAS CON LOGS ---------------------------------------
 
@@ -701,7 +634,6 @@ BEGIN
     
     END WHILE;
 
-
 END//
 
 DELIMITER ;
@@ -732,7 +664,6 @@ INSERT INTO payment_Languages (`languageId`, `name`, `culture`) VALUES
 (5, 'Japanese', 'ja-JP');
 
 DELIMITER //
-
 
 CREATE PROCEDURE insertTranscription()
 BEGIN
@@ -950,7 +881,6 @@ call insertHistoryConversations();
 
 DELIMITER //
 
-
 CREATE PROCEDURE insertPaymentAIMessages()
 BEGIN
 		SET @i = 0;
@@ -979,7 +909,7 @@ BEGIN
 			SET @totalTokens = @promptTokens + FLOOR(RAND() * 100);
 			SET @completionTokens = @totalTokens - @promptTokens;
 			SET @transcriptionId = FLOOR(1 + RAND() * 298);
-			SET @AIresponseId = FLOOR(2 + RAND() * 300);
+			SET @AIresponseId = FLOOR(1 + RAND() * 300);
 			SET @idgenerateaudios = FLOOR(1 + RAND() * 298);
 
 			SET @randomDays = FLOOR(RAND() * 30); -- VA A GENERAR UN DIA RANDOM HASTA 30 QUE VA A SER SUMADO O RESTADO
@@ -1102,7 +1032,7 @@ BEGIN
         SET @IdpaymentData = FLOOR(1 + RAND() * 60);  -- ID de datos de pago aleatorio
         SET @IdeventType = FLOOR(1 + RAND() * 5);  -- ID de tipo de evento aleatorio
         SET @Idconversations = FLOOR(1 + RAND() * 60);  -- ID de conversación aleatorio
-        SET @MessageId = FLOOR(1 + RAND() * 596);  -- ID de mensaje aleatorio
+        SET @MessageId = FLOOR(1 + RAND() * 300);  -- ID de mensaje aleatorio
 		SET @timestamp = FROM_UNIXTIME(
 				FLOOR(UNIX_TIMESTAMP(CONCAT(YEAR(NOW()), '-01-01 00:00:00')) + 
 					  RAND() * (UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(CONCAT(YEAR(NOW()), '-01-01 00:00:00'))))
@@ -1132,4 +1062,3 @@ END //
 DELIMITER ;
 
 call insertPaymentAnalysisLogs();
-
