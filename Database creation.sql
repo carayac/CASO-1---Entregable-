@@ -99,7 +99,6 @@ CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_Countries` (
   `FK_currencyId` INT NOT NULL,
   `name` VARCHAR(60) NOT NULL,
   `phoneCode` VARCHAR(4) NOT NULL,
-  `language` VARCHAR(7) NOT NULL,
   PRIMARY KEY (`countryId`),
   INDEX `fk_payment_countries_payment_currency1_idx` (`FK_currencyId` ASC) VISIBLE,
   CONSTRAINT `fk_payment_countries_payment_currency1`
@@ -227,17 +226,10 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_services` (
   `serviceId` INT NOT NULL AUTO_INCREMENT,
-  `FK_userId` INT NOT NULL,
   `FK_serviceCategoryId` TINYINT NOT NULL,
   `logoURL` VARCHAR(200) NULL,
   PRIMARY KEY (`serviceId`),
-  INDEX `fk_payment_businesses_payment_users1_idx` (`FK_userId` ASC) VISIBLE,
   INDEX `fk_payment_services_payment_serviceTypes1_idx` (`FK_serviceCategoryId` ASC) VISIBLE,
-  CONSTRAINT `fk_payment_businesses_payment_users1`
-    FOREIGN KEY (`FK_userId`)
-    REFERENCES `paymentdb`.`payment_users` (`userId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `fk_payment_services_payment_serviceTypes1`
     FOREIGN KEY (`FK_serviceCategoryId`)
     REFERENCES `paymentdb`.`payment_serviceCategories` (`serviceCategoryId`)
@@ -283,49 +275,6 @@ CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_audioFiles` (
   `filename` VARCHAR(255) NOT NULL,
   `lastUpdate` DATETIME NOT NULL DEFAULT NOW(),
   PRIMARY KEY (`audioFIleId`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `paymentdb`.`payment_paymentFrecuency`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_paymentFrecuency` (
-  `payment_paymentId` TINYINT NOT NULL,
-  `days` INT NOT NULL DEFAULT 90,
-  PRIMARY KEY (`payment_paymentId`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `paymentdb`.`payment_recurringpayments`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_recurringpayments` (
-  `serviceId` INT NOT NULL,
-  `paymentsid` INT NOT NULL AUTO_INCREMENT,
-  `paymenFrecuencyId` INT NOT NULL,
-  `amount` DECIMAL(10,2) NOT NULL,
-  `userId` INT NOT NULL,
-  `lastUpdate` DATETIME NOT NULL DEFAULT NOW(),
-  `lastPayment` DATETIME NOT NULL DEFAULT NOW(),
-  INDEX `fk_payment_recurringpayments_payment_services1_idx` (`serviceId` ASC) VISIBLE,
-  PRIMARY KEY (`paymentsid`),
-  INDEX `fk_payment_recurringpayments_payment_paymenttype1_idx` (`paymenFrecuencyId` ASC) VISIBLE,
-  INDEX `fk_payment_recurringpayments_payment_users1_idx` (`userId` ASC) VISIBLE,
-  CONSTRAINT `fk_payment_recurringpayments_payment_services1`
-    FOREIGN KEY (`serviceId`)
-    REFERENCES `paymentdb`.`payment_services` (`serviceId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_payment_recurringpayments_payment_paymenttype1`
-    FOREIGN KEY (`paymenFrecuencyId`)
-    REFERENCES `paymentdb`.`payment_paymentFrecuency` (`payment_paymentId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_payment_recurringpayments_payment_users1`
-    FOREIGN KEY (`userId`)
-    REFERENCES `paymentdb`.`payment_users` (`userId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -380,7 +329,7 @@ CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_contactServiceInfo` (
   `value` VARCHAR(100) NOT NULL,
   `lastUpdate` DATETIME NOT NULL DEFAULT NOW(),
   `enabled` BIT NOT NULL DEFAULT 1,
-  `FK_countryId` SMALLINT NOT NULL,
+  `FK_countryId` SMALLINT NULL,
   `FK_serviceId` INT NOT NULL,
   `FK_contactInfoTypeId` TINYINT NOT NULL,
   PRIMARY KEY (`contactServiceInfoId`),
@@ -414,7 +363,7 @@ CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_schedules` (
   `recurrencyType` VARCHAR(10) NOT NULL,
   `repit` VARCHAR(45) NULL,
   `endType` BIT NOT NULL DEFAULT 1,
-  `endDate` DATETIME NULL DEFAULT MAXDATE(),
+  `endDate` DATETIME NULL DEFAULT '9999-12-31 23:59:59',
   `repitions` INT NULL,
   PRIMARY KEY (`scheduleId`))
 ENGINE = InnoDB;
@@ -548,30 +497,25 @@ ENGINE = InnoDB;
 -- Table `paymentdb`.`payment_scheduledPayments`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_scheduledPayments` (
-  `scheduledPaymentId` INT NOT NULL,
-  `scheduleId` INT NULL,
+  `scheduledPaymentId` INT NOT NULL AUTO_INCREMENT,
+  `scheduleId` INT NOT NULL,
   `userId` INT NOT NULL,
   `serviceId` INT NOT NULL,
-  `createdDate` DATETIME NOT NULL,
-  `deleted` BIT NOT NULL,
-  `lastUpdated` DATETIME NOT NULL,
-  `enabled` BIT NOT NULL,
+  `createdDate` DATETIME NOT NULL DEFAULT now(),
+  `deleted` BIT NOT NULL DEFAULT 0,
+  `lastUpdated` DATETIME NOT NULL DEFAULT now(),
+  `enabled` BIT NOT NULL DEFAULT 1,
   `amount` DECIMAL(10,2) NOT NULL,
   `currencyId` INT NOT NULL,
   `avaliablepaymentmethodperuserId` INT NULL,
   `FK_availablePaymentMethodPerServiceId` INT NULL,
   PRIMARY KEY (`scheduledPaymentId`),
-  INDEX `fk_payment_scheduledPayment_payment_schedules1_idx` (`scheduleId` ASC) VISIBLE,
   INDEX `fk_payment_scheduledPayment_payment_users1_idx` (`userId` ASC) VISIBLE,
   INDEX `fk_payment_scheduledPayment_payment_services1_idx` (`serviceId` ASC) VISIBLE,
   INDEX `fk_payment_scheduledPayment_payment_currency1_idx` (`currencyId` ASC) VISIBLE,
   INDEX `fk_payment_scheduledPayments_payment_avaliablepaymentmethod_idx1` (`avaliablepaymentmethodperuserId` ASC) VISIBLE,
   INDEX `fk_payment_scheduledPayments_payment_AvailablePaymentMethod_idx` (`FK_availablePaymentMethodPerServiceId` ASC) VISIBLE,
-  CONSTRAINT `fk_payment_scheduledPayment_payment_schedules1`
-    FOREIGN KEY (`scheduleId`)
-    REFERENCES `paymentdb`.`payment_schedules` (`scheduleId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+  INDEX `fk_payment_scheduledPayments_payment_schedules1_idx` (`scheduleId` ASC) VISIBLE,
   CONSTRAINT `fk_payment_scheduledPayment_payment_users1`
     FOREIGN KEY (`userId`)
     REFERENCES `paymentdb`.`payment_users` (`userId`)
@@ -595,6 +539,11 @@ CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_scheduledPayments` (
   CONSTRAINT `fk_payment_scheduledPayments_payment_AvailablePaymentMethodsP1`
     FOREIGN KEY (`FK_availablePaymentMethodPerServiceId`)
     REFERENCES `paymentdb`.`payment_AvailablePaymentMethodsPerService` (`availablePaymentMethodPerServiceId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_payment_scheduledPayments_payment_schedules1`
+    FOREIGN KEY (`scheduleId`)
+    REFERENCES `paymentdb`.`payment_schedules` (`scheduleId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -634,7 +583,7 @@ CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_paymentAttempts` (
   `authNumber` VARCHAR(50) NULL,
   `response` BIT NULL,
   `FK_idstatusType` INT NOT NULL,
-  PRIMARY KEY (`paymentAttemptId`, `FK_idstatusType`),
+  PRIMARY KEY (`paymentAttemptId`),
   INDEX `fk_payment_paymentAttempt_payment_scheduledPayment1_idx` (`scheduledPaymentId` ASC) VISIBLE,
   INDEX `fk_payment_paymentAttempt_payment_users1_idx` (`FK_userId` ASC) VISIBLE,
   INDEX `fk_payment_paymentAttempts_payment_avaliablepaymentmethodpe_idx` (`FK_avaliablepaymentmethodperserviceId` ASC) VISIBLE,
@@ -712,10 +661,10 @@ ENGINE = InnoDB;
 -- Table `paymentdb`.`payment_transTypes`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_transTypes` (
-  `idTransTyoe` INT NOT NULL,
+  `transTypeId` INT NOT NULL,
   `name` VARCHAR(100) NOT NULL,
   `deleted` BIT NOT NULL DEFAULT 0,
-  PRIMARY KEY (`idTransTyoe`))
+  PRIMARY KEY (`transTypeId`))
 ENGINE = InnoDB;
 
 
@@ -745,7 +694,7 @@ CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_transactions` (
   `FK_personId` INT NULL,
   `FK_exchangeRateid` INT NOT NULL,
   `FK_transSubTypeId` INT NOT NULL,
-  `FK_idTransTyoe` INT NOT NULL,
+  `FK_transTypeId` INT NOT NULL,
   `checkSum` VARBINARY(250) NOT NULL,
   PRIMARY KEY (`transactionId`),
   INDEX `fk_payment_transaction_payment_paymentAttempt1_idx` (`paymentAttemptId` ASC) VISIBLE,
@@ -753,7 +702,7 @@ CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_transactions` (
   INDEX `fk_payment_transaction_payment_ExchangeRate1_idx` (`FK_exchangeRateid` ASC) VISIBLE,
   INDEX `fk_payment_transaction_payment_users2_idx` (`FK_personId` ASC) VISIBLE,
   INDEX `fk_payment_transaction_payment_trasnSubType1_idx` (`FK_transSubTypeId` ASC) VISIBLE,
-  INDEX `fk_payment_transaction_payment_transTyoe1_idx` (`FK_idTransTyoe` ASC) VISIBLE,
+  INDEX `fk_payment_transaction_payment_transTyoe1_idx` (`FK_transTypeId` ASC) VISIBLE,
   CONSTRAINT `fk_payment_transaction_payment_paymentAttempt1`
     FOREIGN KEY (`paymentAttemptId`)
     REFERENCES `paymentdb`.`payment_paymentAttempts` (`paymentAttemptId`)
@@ -780,8 +729,8 @@ CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_transactions` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_payment_transaction_payment_transTyoe1`
-    FOREIGN KEY (`FK_idTransTyoe`)
-    REFERENCES `paymentdb`.`payment_transTypes` (`idTransTyoe`)
+    FOREIGN KEY (`FK_transTypeId`)
+    REFERENCES `paymentdb`.`payment_transTypes` (`transTypeId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -994,7 +943,7 @@ CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_planPrices` (
   `amount` DECIMAL(10,2) NULL,
   `recurrencyType` VARCHAR(10) NOT NULL,
   `postTime` DATETIME NOT NULL,
-  `endDate` DATETIME NOT NULL DEFAULT MAXDATE(),
+  `endDate` DATETIME NOT NULL DEFAULT '9999-12-31 23:59:59',
   `current` BIT NOT NULL DEFAULT 1,
   `FK_subscriptionId` TINYINT NOT NULL,
   `FK_currencyId` INT NULL,
@@ -1066,35 +1015,6 @@ CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_planLimits` (
   CONSTRAINT `fk_payment_planLimits_payment_plansPerUser1`
     FOREIGN KEY (`FK_planPerUserId`)
     REFERENCES `paymentdb`.`payment_plansPerUser` (`planPerUserId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `paymentdb`.`payment_MasterCardStatus`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_MasterCardStatus` (
-  `MasterCardstatusId` INT NOT NULL,
-  `name` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`MasterCardstatusId`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `paymentdb`.`payment_APIMasterCardResponse`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_APIMasterCardResponse` (
-  `APIMasterCardResponse` INT NOT NULL AUTO_INCREMENT,
-  `HTTPResponseCode` SMALLINT(1) NOT NULL,
-  `MasterCardstatusId` INT NOT NULL,
-  `requestDate` TIMESTAMP NOT NULL DEFAULT NOW(),
-  `message` TEXT(1) NULL,
-  PRIMARY KEY (`APIMasterCardResponse`),
-  INDEX `fk_payment_APIMasterCardResponse_payment_MasterCardStatus1_idx` (`MasterCardstatusId` ASC) VISIBLE,
-  CONSTRAINT `fk_payment_APIMasterCardResponse_payment_MasterCardStatus1`
-    FOREIGN KEY (`MasterCardstatusId`)
-    REFERENCES `paymentdb`.`payment_MasterCardStatus` (`MasterCardstatusId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -1222,6 +1142,121 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `paymentdb`.`payment_AIModel`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_AIModel` (
+  `idAIModel` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  `enable` BIT NOT NULL DEFAULT 1,
+  PRIMARY KEY (`idAIModel`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `paymentdb`.`payment_Transcriptions`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_Transcriptions` (
+  `transcriptionId` INT NOT NULL AUTO_INCREMENT,
+  `duration` DECIMAL(8,2) NOT NULL DEFAULT 0.00,
+  `text` VARCHAR(4096) NULL,
+  `FK_audioFIleId` INT NOT NULL,
+  `FK_languageId` TINYINT NOT NULL,
+  `idAIModel` INT NOT NULL,
+  PRIMARY KEY (`transcriptionId`),
+  INDEX `fk_payment_generatetranscriptions_payment_audioFiles1_idx` (`FK_audioFIleId` ASC) VISIBLE,
+  INDEX `fk_payment_generatetranscriptions_payment_Languages1_idx` (`FK_languageId` ASC) VISIBLE,
+  INDEX `fk_payment_generatetranscriptions_payment_AIModel1_idx` (`idAIModel` ASC) VISIBLE,
+  CONSTRAINT `fk_payment_generatetranscriptions_payment_audioFiles1`
+    FOREIGN KEY (`FK_audioFIleId`)
+    REFERENCES `paymentdb`.`payment_audioFiles` (`audioFIleId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_payment_generatetranscriptions_payment_Languages1`
+    FOREIGN KEY (`FK_languageId`)
+    REFERENCES `paymentdb`.`payment_Languages` (`languageId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_payment_generatetranscriptions_payment_AIModel1`
+    FOREIGN KEY (`idAIModel`)
+    REFERENCES `paymentdb`.`payment_AIModel` (`idAIModel`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `paymentdb`.`payment_AIresponse`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_AIresponse` (
+  `AIresponseId` INT NOT NULL AUTO_INCREMENT,
+  `previous_responseid` INT NULL,
+  `outputText` VARCHAR(4096) NOT NULL,
+  `transcriptionId` INT NOT NULL,
+  `idAIModel` INT NOT NULL,
+  PRIMARY KEY (`AIresponseId`),
+  INDEX `fk_payment_AIresponse_payment_AIresponse1_idx` (`previous_responseid` ASC) VISIBLE,
+  INDEX `fk_payment_AIresponse_payment_generatetranscriptions1_idx` (`transcriptionId` ASC) VISIBLE,
+  INDEX `fk_payment_AIresponse_payment_AIModel1_idx` (`idAIModel` ASC) VISIBLE,
+  CONSTRAINT `fk_payment_AIresponse_payment_AIresponse1`
+    FOREIGN KEY (`previous_responseid`)
+    REFERENCES `paymentdb`.`payment_AIresponse` (`AIresponseId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_payment_AIresponse_payment_generatetranscriptions1`
+    FOREIGN KEY (`transcriptionId`)
+    REFERENCES `paymentdb`.`payment_Transcriptions` (`transcriptionId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_payment_AIresponse_payment_AIModel1`
+    FOREIGN KEY (`idAIModel`)
+    REFERENCES `paymentdb`.`payment_AIModel` (`idAIModel`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `paymentdb`.`payment_audiosperAI`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_audiosperAI` (
+  `idgenerateaudios` INT NOT NULL AUTO_INCREMENT,
+  `voice` VARCHAR(10) NOT NULL,
+  `reponseformat` VARCHAR(45) NOT NULL DEFAULT 'mp4',
+  `payment_idAISetup` INT NOT NULL,
+  `FK_idAIresponse_input` INT NOT NULL,
+  `index` INT NULL,
+  `expires_at` INT NULL,
+  `idAIModel` INT NOT NULL,
+  `audioFIleId` INT NOT NULL,
+  PRIMARY KEY (`idgenerateaudios`),
+  INDEX `fk_payment_generateaudios_payment_AISetup1_idx` (`payment_idAISetup` ASC) VISIBLE,
+  INDEX `fk_payment_generateaudios_payment_AIresponse1_idx` (`FK_idAIresponse_input` ASC) VISIBLE,
+  INDEX `fk_payment_generateaudios_payment_AIModel1_idx` (`idAIModel` ASC) VISIBLE,
+  INDEX `fk_payment_generateaudios_payment_audioFiles1_idx` (`audioFIleId` ASC) VISIBLE,
+  CONSTRAINT `fk_payment_generateaudios_payment_AISetup1`
+    FOREIGN KEY (`payment_idAISetup`)
+    REFERENCES `paymentdb`.`payment_AISetup` (`idAISetup`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_payment_generateaudios_payment_AIresponse1`
+    FOREIGN KEY (`FK_idAIresponse_input`)
+    REFERENCES `paymentdb`.`payment_AIresponse` (`AIresponseId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_payment_generateaudios_payment_AIModel1`
+    FOREIGN KEY (`idAIModel`)
+    REFERENCES `paymentdb`.`payment_AIModel` (`idAIModel`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_payment_generateaudios_payment_audioFiles1`
+    FOREIGN KEY (`audioFIleId`)
+    REFERENCES `paymentdb`.`payment_audioFiles` (`audioFIleId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `paymentdb`.`payment_messageTypes`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_messageTypes` (
@@ -1290,9 +1325,15 @@ CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_AIMessages` (
   `promptTokens` INT NULL,
   `totalTokens` INT NULL,
   `completionTokens` INT NULL,
+  `transcriptionId` INT NOT NULL,
+  `AIresponseId` INT NOT NULL,
+  `idgenerateaudios` INT NOT NULL,
   PRIMARY KEY (`messageId`),
   INDEX `fk_payment_AIMessages_payment_messageType1_idx` (`FK_messageTypeId` ASC) VISIBLE,
   INDEX `fk_payment_AIMessages_payment_conversations1_idx` (`idconversations` ASC) VISIBLE,
+  INDEX `fk_payment_AIMessages_payment_Transcriptions1_idx` (`transcriptionId` ASC) VISIBLE,
+  INDEX `fk_payment_AIMessages_payment_AIresponse1_idx` (`AIresponseId` ASC) VISIBLE,
+  INDEX `fk_payment_AIMessages_payment_audiosperAI1_idx` (`idgenerateaudios` ASC) VISIBLE,
   CONSTRAINT `fk_payment_AIMessages_payment_messageType1`
     FOREIGN KEY (`FK_messageTypeId`)
     REFERENCES `paymentdb`.`payment_messageTypes` (`messageTypeId`)
@@ -1302,173 +1343,22 @@ CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_AIMessages` (
     FOREIGN KEY (`idconversations`)
     REFERENCES `paymentdb`.`payment_historyconversations` (`idconversations`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `paymentdb`.`payment_AIModel`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_AIModel` (
-  `idAIModel` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
-  `enable` BIT NOT NULL DEFAULT 1,
-  PRIMARY KEY (`idAIModel`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `paymentdb`.`payment_Transcriptions`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_Transcriptions` (
-  `transcriptionId` INT NOT NULL AUTO_INCREMENT,
-  `duration` DECIMAL(8,20) NOT NULL DEFAULT 0.00,
-  `text` VARCHAR(4096) NULL,
-  `FK_audioFIleId` INT NOT NULL,
-  `FK_languageId` TINYINT NOT NULL,
-  `idAIModel` INT NOT NULL,
-  PRIMARY KEY (`transcriptionId`),
-  INDEX `fk_payment_generatetranscriptions_payment_audioFiles1_idx` (`FK_audioFIleId` ASC) VISIBLE,
-  INDEX `fk_payment_generatetranscriptions_payment_Languages1_idx` (`FK_languageId` ASC) VISIBLE,
-  INDEX `fk_payment_generatetranscriptions_payment_AIModel1_idx` (`idAIModel` ASC) VISIBLE,
-  CONSTRAINT `fk_payment_generatetranscriptions_payment_audioFiles1`
-    FOREIGN KEY (`FK_audioFIleId`)
-    REFERENCES `paymentdb`.`payment_audioFiles` (`audioFIleId`)
-    ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_payment_generatetranscriptions_payment_Languages1`
-    FOREIGN KEY (`FK_languageId`)
-    REFERENCES `paymentdb`.`payment_Languages` (`languageId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_payment_generatetranscriptions_payment_AIModel1`
-    FOREIGN KEY (`idAIModel`)
-    REFERENCES `paymentdb`.`payment_AIModel` (`idAIModel`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `paymentdb`.`payment_AIresponse`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_AIresponse` (
-  `AIresponseId` INT NOT NULL AUTO_INCREMENT,
-  `FK_messageId` INT NULL,
-  `previous_responseid` INT NULL,
-  `outputText` VARCHAR(4096) NOT NULL,
-  `transcriptionId` INT NOT NULL,
-  `idAIModel` INT NOT NULL,
-  PRIMARY KEY (`AIresponseId`),
-  INDEX `fk_payment_AIresponse_payment_agent1_idx` (`FK_messageId` ASC) VISIBLE,
-  INDEX `fk_payment_AIresponse_payment_AIresponse1_idx` (`previous_responseid` ASC) VISIBLE,
-  INDEX `fk_payment_AIresponse_payment_generatetranscriptions1_idx` (`transcriptionId` ASC) VISIBLE,
-  INDEX `fk_payment_AIresponse_payment_AIModel1_idx` (`idAIModel` ASC) VISIBLE,
-  CONSTRAINT `fk_payment_AIresponse_payment_agent1`
-    FOREIGN KEY (`FK_messageId`)
-    REFERENCES `paymentdb`.`payment_AIMessages` (`messageId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_payment_AIresponse_payment_AIresponse1`
-    FOREIGN KEY (`previous_responseid`)
-    REFERENCES `paymentdb`.`payment_AIresponse` (`AIresponseId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_payment_AIresponse_payment_generatetranscriptions1`
+  CONSTRAINT `fk_payment_AIMessages_payment_Transcriptions1`
     FOREIGN KEY (`transcriptionId`)
     REFERENCES `paymentdb`.`payment_Transcriptions` (`transcriptionId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_payment_AIresponse_payment_AIModel1`
-    FOREIGN KEY (`idAIModel`)
-    REFERENCES `paymentdb`.`payment_AIModel` (`idAIModel`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `paymentdb`.`payment_audiosperAI`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_audiosperAI` (
-  `idgenerateaudios` INT NOT NULL AUTO_INCREMENT,
-  `voice` VARCHAR(10) NOT NULL,
-  `reponseformat` VARCHAR(45) NOT NULL DEFAULT 'mp4',
-  `payment_idAISetup` INT NOT NULL,
-  `FK_idAIresponse_input` INT NOT NULL,
-  `index` INT NULL,
-  `expires_at` INT NULL,
-  `idAIModel` INT NOT NULL,
-  `audioFIleId` INT NOT NULL,
-  PRIMARY KEY (`idgenerateaudios`),
-  INDEX `fk_payment_generateaudios_payment_AISetup1_idx` (`payment_idAISetup` ASC) VISIBLE,
-  INDEX `fk_payment_generateaudios_payment_AIresponse1_idx` (`FK_idAIresponse_input` ASC) VISIBLE,
-  INDEX `fk_payment_generateaudios_payment_AIModel1_idx` (`idAIModel` ASC) VISIBLE,
-  INDEX `fk_payment_generateaudios_payment_audioFiles1_idx` (`audioFIleId` ASC) VISIBLE,
-  CONSTRAINT `fk_payment_generateaudios_payment_AISetup1`
-    FOREIGN KEY (`payment_idAISetup`)
-    REFERENCES `paymentdb`.`payment_AISetup` (`idAISetup`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_payment_generateaudios_payment_AIresponse1`
-    FOREIGN KEY (`FK_idAIresponse_input`)
-    REFERENCES `paymentdb`.`payment_AIresponse` (`AIresponseId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_payment_generateaudios_payment_AIModel1`
-    FOREIGN KEY (`idAIModel`)
-    REFERENCES `paymentdb`.`payment_AIModel` (`idAIModel`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_payment_generateaudios_payment_audioFiles1`
-    FOREIGN KEY (`audioFIleId`)
-    REFERENCES `paymentdb`.`payment_audioFiles` (`audioFIleId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `paymentdb`.`payment_AIanalysis`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_AIanalysis` (
-  `AIanalysisId` INT NOT NULL AUTO_INCREMENT,
-  `AIresponseId` INT NOT NULL,
-  `extractedEntities` JSON NULL,
-  `creationDate` DATETIME NOT NULL DEFAULT NOW(),
-  `idconversationStatus` INT NOT NULL,
-  `messageId` INT NOT NULL,
-  PRIMARY KEY (`AIanalysisId`),
-  INDEX `fk_payment_AIanalysis_payment_AIresponse1_idx` (`AIresponseId` ASC) VISIBLE,
-  INDEX `fk_payment_AIanalysis_payment_conversationStatus1_idx` (`idconversationStatus` ASC) VISIBLE,
-  INDEX `fk_payment_AIanalysis_payment_AIMessages1_idx` (`messageId` ASC) VISIBLE,
-  CONSTRAINT `fk_payment_AIanalysis_payment_AIresponse1`
+  CONSTRAINT `fk_payment_AIMessages_payment_AIresponse1`
     FOREIGN KEY (`AIresponseId`)
     REFERENCES `paymentdb`.`payment_AIresponse` (`AIresponseId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_payment_AIanalysis_payment_conversationStatus1`
-    FOREIGN KEY (`idconversationStatus`)
-    REFERENCES `paymentdb`.`payment_conversationStatus` (`idconversationStatus`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_payment_AIanalysis_payment_AIMessages1`
-    FOREIGN KEY (`messageId`)
-    REFERENCES `paymentdb`.`payment_AIMessages` (`messageId`)
+  CONSTRAINT `fk_payment_AIMessages_payment_audiosperAI1`
+    FOREIGN KEY (`idgenerateaudios`)
+    REFERENCES `paymentdb`.`payment_audiosperAI` (`idgenerateaudios`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `paymentdb`.`payment_systemActionTypes`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_systemActionTypes` (
-  `idactionType` INT NOT NULL,
-  `name` VARCHAR(75) NOT NULL,
-  `enable` BIT NOT NULL DEFAULT 1,
-  `eventDetails` VARCHAR(1000) NULL,
-  PRIMARY KEY (`idactionType`))
 ENGINE = InnoDB;
 
 
@@ -1520,38 +1410,107 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `paymentdb`.`payment_systemActionTypes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_systemActionTypes` (
+  `idactionType` INT NOT NULL,
+  `name` VARCHAR(75) NOT NULL,
+  `enable` BIT NOT NULL DEFAULT 1,
+  `eventDetails` VARCHAR(1000) NULL,
+  PRIMARY KEY (`idactionType`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `paymentdb`.`payment_AIanalysis`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_AIanalysis` (
+  `AIanalysisId` INT NOT NULL AUTO_INCREMENT,
+  `AIresponseId` INT NOT NULL,
+  `extractedEntities` JSON NULL,
+  `creationDate` DATETIME NOT NULL DEFAULT NOW(),
+  `idpaymentData` INT NOT NULL,
+  `scheduledPaymentId` INT NOT NULL,
+  `idactionType` INT NOT NULL,
+  PRIMARY KEY (`AIanalysisId`),
+  INDEX `fk_payment_AIanalysis_payment_AIresponse1_idx` (`AIresponseId` ASC) VISIBLE,
+  INDEX `fk_payment_AIanalysis_payment_AIpaymentData1_idx` (`idpaymentData` ASC) VISIBLE,
+  INDEX `fk_payment_AIanalysis_payment_scheduledPayments1_idx` (`scheduledPaymentId` ASC) VISIBLE,
+  INDEX `fk_payment_AIanalysis_payment_systemActionTypes1_idx` (`idactionType` ASC) VISIBLE,
+  CONSTRAINT `fk_payment_AIanalysis_payment_AIresponse1`
+    FOREIGN KEY (`AIresponseId`)
+    REFERENCES `paymentdb`.`payment_AIresponse` (`AIresponseId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_payment_AIanalysis_payment_AIpaymentData1`
+    FOREIGN KEY (`idpaymentData`)
+    REFERENCES `paymentdb`.`payment_AIpaymentData` (`idpaymentData`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_payment_AIanalysis_payment_scheduledPayments1`
+    FOREIGN KEY (`scheduledPaymentId`)
+    REFERENCES `paymentdb`.`payment_scheduledPayments` (`scheduledPaymentId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_payment_AIanalysis_payment_systemActionTypes1`
+    FOREIGN KEY (`idactionType`)
+    REFERENCES `paymentdb`.`payment_systemActionTypes` (`idactionType`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `paymentdb`.`payment_eventTypes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_eventTypes` (
+  `ideventType` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(85) NOT NULL,
+  `enable` BIT NOT NULL DEFAULT 1,
+  PRIMARY KEY (`ideventType`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `paymentdb`.`payment_paymentAnalysisLogs`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_paymentAnalysisLogs` (
   `paymentAnalysisId` INT NOT NULL AUTO_INCREMENT,
-  `AIanalysisId` INT NOT NULL,
-  `scheduledPaymentId` INT NOT NULL,
-  `idactionType` INT NOT NULL,
+  `AIanalysisId` INT NULL,
   `timestamp` TIMESTAMP NOT NULL DEFAULT now(),
   `idpaymentData` INT NOT NULL,
+  `ideventType` INT NOT NULL,
+  `idconversations` INT NOT NULL,
+  `messageId` INT NOT NULL,
   PRIMARY KEY (`paymentAnalysisId`),
   INDEX `fk_payment_paymentAnalysis_payment_AIanalysis1_idx` (`AIanalysisId` ASC) VISIBLE,
-  INDEX `fk_payment_paymentAnalysis_payment_scheduledPayments1_idx` (`scheduledPaymentId` ASC) VISIBLE,
-  INDEX `fk_payment_paymentAnalysis_payment_actionType1_idx` (`idactionType` ASC) VISIBLE,
   INDEX `fk_payment_paymentAnalysisLogs_payment_AIpaymentData1_idx` (`idpaymentData` ASC) VISIBLE,
+  INDEX `fk_payment_paymentAnalysisLogs_payment_eventTypes1_idx` (`ideventType` ASC) VISIBLE,
+  INDEX `fk_payment_paymentAnalysisLogs_payment_historyconversations_idx` (`idconversations` ASC) VISIBLE,
+  INDEX `fk_payment_paymentAnalysisLogs_payment_AIMessages1_idx` (`messageId` ASC) VISIBLE,
   CONSTRAINT `fk_payment_paymentAnalysis_payment_AIanalysis1`
     FOREIGN KEY (`AIanalysisId`)
     REFERENCES `paymentdb`.`payment_AIanalysis` (`AIanalysisId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_payment_paymentAnalysis_payment_scheduledPayments1`
-    FOREIGN KEY (`scheduledPaymentId`)
-    REFERENCES `paymentdb`.`payment_scheduledPayments` (`scheduledPaymentId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_payment_paymentAnalysis_payment_actionType1`
-    FOREIGN KEY (`idactionType`)
-    REFERENCES `paymentdb`.`payment_systemActionTypes` (`idactionType`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `fk_payment_paymentAnalysisLogs_payment_AIpaymentData1`
     FOREIGN KEY (`idpaymentData`)
     REFERENCES `paymentdb`.`payment_AIpaymentData` (`idpaymentData`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_payment_paymentAnalysisLogs_payment_eventTypes1`
+    FOREIGN KEY (`ideventType`)
+    REFERENCES `paymentdb`.`payment_eventTypes` (`ideventType`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_payment_paymentAnalysisLogs_payment_historyconversations1`
+    FOREIGN KEY (`idconversations`)
+    REFERENCES `paymentdb`.`payment_historyconversations` (`idconversations`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_payment_paymentAnalysisLogs_payment_AIMessages1`
+    FOREIGN KEY (`messageId`)
+    REFERENCES `paymentdb`.`payment_AIMessages` (`messageId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -1564,11 +1523,11 @@ CREATE TABLE IF NOT EXISTS `paymentdb`.`payment_TranscriptionSegments` (
   `segmentId` INT NOT NULL AUTO_INCREMENT,
   `transcriptionId` INT NOT NULL,
   `seek` INT NOT NULL DEFAULT 0,
-  `start` DECIMAL(8,20) NOT NULL DEFAULT 0.00,
-  `end` DECIMAL(8,20) NOT NULL DEFAULT 0.00,
+  `start` DECIMAL(8,2) NOT NULL DEFAULT 0.00,
+  `end` DECIMAL(8,2) NOT NULL DEFAULT 0.00,
   `text` VARCHAR(4096) NULL,
-  `avgLogProb` DECIMAL(8,10) NOT NULL DEFAULT 0.00,
-  `compressionRatio` DECIMAL(8,10) NOT NULL DEFAULT 0.00,
+  `avgLogProb` DECIMAL(8,5) NOT NULL DEFAULT 0.00,
+  `compressionRatio` DECIMAL(8,5) NOT NULL DEFAULT 0.00,
   PRIMARY KEY (`segmentId`),
   INDEX `fk_payment_TranscriptionSegments_payment_Transcriptions1_idx` (`transcriptionId` ASC) VISIBLE,
   CONSTRAINT `fk_payment_TranscriptionSegments_payment_Transcriptions1`
