@@ -109,6 +109,8 @@ END//
 
 DELIMITER ;
 
+
+SELECT * FROM payment_users
 -- Procedimiento que inserta 30 usuarios a la base de datos por medio de datos aleatorias
 
 DELIMITER //
@@ -272,3 +274,479 @@ VALUES
 (3, 'suscripcion@netflix.cr', NOW(), 1, 2, 3, 1),
 (4, '506-9876-5432', NOW(), 1, 3, 1, 2);
 
+-- AUDIOS
+
+
+INSERT INTO payment_audioFiles (`audioURL`, `filename`) VALUES
+('https://example.com/audio/payment_success.mp3', 'payment_success.mp3'),
+('https://example.com/audio/payment_failed.mp3', 'payment_failed.mp3'),
+('https://example.com/audio/notification_tone.mp3', 'notification_tone.mp3'),
+('https://example.com/audio/user_message.wav', 'user_message.wav'),
+('https://example.com/audio/system_alert.ogg', 'system_alert.ogg');
+
+-- Procedimientos que guarda 200 audios los cuales forman parte de convesaciones
+DELIMITER //
+
+CREATE PROCEDURE insertaudio()
+BEGIN
+
+	SET @i=0;
+    WHILE @i<300 DO
+		
+        SET @audioURL = ELT(FLOOR(1 + RAND() * 5), 'https://example.com/audio/payment_success', 'https://example.com/audio/payment_failed3', 'https://example.com/audio/notification_tone', 'https://example.com/audio/user_message', 'https://example.com/audio/system_alert');
+        SET @filename = ELT(FLOOR(1 + RAND() * 5), 'payment_success', 'payment_failed', 'notification_tone', 'user_message', 'system_alert');
+        
+		SET @audioURL = CONCAT(@audioURL, @i,".mp3");
+        SET @filename = CONCAT(@filename, @i,".mp3");
+        
+        INSERT INTO payment_audioFiles(audioURL, filename)
+        VALUES(@audioURL, @filename);
+        
+		SET @i = @i + 1;
+    
+    END WHILE;
+
+
+END//
+
+DELIMITER ;
+
+call insertaudio();
+
+
+-- ANALISIS DE IA
+INSERT INTO payment_messageTypes (`messageTypeId`, `name`) VALUES
+(1, 'text'),
+(2, 'image'),
+(3, 'audio_input'),
+(4, 'audio_output'),
+(5, 'tap'),
+(6, 'reaction'),
+(7, 'file');
+
+INSERT INTO payment_AIModel (`idAIModel`, `name`, `enable`) VALUES
+(1, 'GPT-4-turbo', 1),
+(2, 'GPT-4', 1),
+(3, 'GPT-3.5-turbo', 1);
+
+INSERT INTO payment_Languages (`languageId`, `name`, `culture`) VALUES
+(1, 'English', 'en-US'),
+(2, 'Spanish', 'es-ES'),
+(3, 'French', 'fr-FR'),
+(4, 'German', 'de-DE'),
+(5, 'Japanese', 'ja-JP');
+
+DELIMITER //
+
+
+CREATE PROCEDURE insertTranscription()
+BEGIN
+
+	SET @i = 0;
+    WHILE @i<300 do
+    
+		SET @duration = ROUND(1 + (RAND() * 60), 2);
+		SET @FK_audioFileId = FLOOR(1 + RAND() * 299);
+        SET @FK_languageId = FLOOR(1 + RAND() * 5);
+        SET @idAIModel = FLOOR(1 + RAND() * 3); 
+        
+        SET @transcriptionText = CONCAT(
+            CASE
+                WHEN FLOOR(RAND() * 10) = 0 THEN 'Quiero agendar un pago para el próximo lunes.'
+                WHEN FLOOR(RAND() * 10) = 1 THEN '¿Cuáles son los montos disponibles para realizar un pago?'
+                WHEN FLOOR(RAND() * 10) = 2 THEN '¿Puedo programar un pago automático cada mes?'
+                WHEN FLOOR(RAND() * 10) = 3 THEN 'Necesito verificar el saldo para agendar el pago.'
+                WHEN FLOOR(RAND() * 10) = 4 THEN '¿Qué método de pago tengo disponible para este proceso?'
+                WHEN FLOOR(RAND() * 10) = 5 THEN 'Quiero realizar un pago el día 10 del próximo mes.'
+                WHEN FLOOR(RAND() * 10) = 6 THEN '¿Cuál es el monto mínimo para agendar un pago recurrente?'
+                WHEN FLOOR(RAND() * 10) = 7 THEN '¿Es posible cancelar un pago agendado?'
+                WHEN FLOOR(RAND() * 10) = 8 THEN 'Me gustaría programar pagos automáticos para todas mis suscripciones.'
+                ELSE 'Quiero ver las opciones para configurar pagos automáticos de mis servicios.'
+            END
+        );
+        
+        INSERT INTO payment_Transcriptions (duration, text, FK_audioFIleId, FK_languageId, idAIModel)
+        VALUES (@duration, @transcriptionText, @FK_audioFileId, @FK_languageId, @idAIModel);
+		SET @i = @i +1;
+    
+    END WHILE;
+
+END //
+
+DELIMITER ;
+
+call insertTranscription();
+
+-- PROCEDIMIENTO QUE ALMACENA RESPUESTA DE LA IA
+drop procedure insertiaresponse
+
+DELIMITER //
+
+CREATE PROCEDURE insertiaresponse()
+BEGIN
+
+	SET @i = 0;
+    
+    while @i < 300 do
+		
+		SET @idAIModel = FLOOR(1 + RAND() * 3); 
+        SET @transcriptionId = FLOOR(1 + RAND() * 299);
+        
+        SET @previous_responseid = CASE
+			WHEN @1 != 0 THEN @i - 1
+			ELSE NULL
+		END;
+				
+        -- GENERA UN REPSUESTA ANALIZADA POR LA IA DE FOMRA ALEATORIA
+        SET @textOption = FLOOR(1 + RAND() * 10);  
+		SET @actionOption = FLOOR(1 + RAND() * 3);  
+
+		
+		CASE @textOption
+			WHEN 1 THEN
+				SET @outputText = CONCAT('¡Todo listo! Su pago ha sido ', IF(RAND() > 0.5, 'exitoso', 'rechazado'), '. ', 
+										IF(RAND() > 0.5, 'Revise su cuenta para ver los detalles.', 'Por favor, intente nuevamente más tarde.'));
+			WHEN 2 THEN
+				SET @outputText = CONCAT('Su solicitud de pago ha sido ', IF(RAND() > 0.5, 'procesada', 'recibida'), '. ', 
+										'El proceso tomará ', ROUND(RAND() * 10 + 5, 2), ' minutos. ¿Desea recibir una notificación cuando se complete?');
+			WHEN 3 THEN
+				SET @outputText = CONCAT('¡Todo está listo! El pago de ', ROUND(RAND() * 500, 2), ' fue ', 
+										IF(RAND() > 0.5, 'programado correctamente', 'falló debido a un error en el sistema'), '.');
+			WHEN 4 THEN
+				SET @outputText = CONCAT('¡Gran noticia! El pago ha sido ', IF(RAND() > 0.5, 'agendado para el 15 de abril', 'cancelado por motivos técnicos'), '.',
+										' Su transacción fue realizada por un monto de $', ROUND(RAND() * 300, 2), '.');
+			WHEN 5 THEN
+				SET @outputText = CONCAT('El pago de ', ROUND(RAND() * 500, 2), ' ha sido ', 
+										IF(RAND() > 0.5, 'exitoso', 'rechazado'), '. ', 
+										'Por favor, verifique los detalles de su cuenta o intente más tarde.');
+			WHEN 6 THEN
+				SET @outputText = CONCAT('Ha ocurrido un inconveniente al procesar su pago de $', ROUND(RAND() * 300, 2), '. ',
+										'¿Le gustaría realizar el pago nuevamente o contactar al soporte?');
+			WHEN 7 THEN
+				SET @outputText = CONCAT('El pago ha sido ', IF(RAND() > 0.5, 'confirmado', 'pendiente de aprobación'), '. ',
+										'Estaremos notificándole el estado en breve. ¿Algo más en lo que pueda asistirte?');
+			WHEN 8 THEN
+				SET @outputText = CONCAT('El pago fue ', IF(RAND() > 0.5, 'realizado exitosamente', 'cancelado debido a un error en el proceso de pago'), '.',
+										' Puede revisar el estado en su historial. ¿Quieres hacer algo más?');
+			WHEN 9 THEN
+				SET @outputText = CONCAT('La solicitud de pago ha sido ', IF(RAND() > 0.5, 'procesada con éxito', 'rechazada por falta de fondos'), '. ',
+										'Su pago de $', ROUND(RAND() * 400, 2), ' está ', IF(RAND() > 0.5, 'en revisión', 'completado'), '.');
+			WHEN 10 THEN
+				SET @outputText = CONCAT('La transacción está ', IF(RAND() > 0.5, 'en proceso', 'pendiente'), '. ',
+										'El pago se completará dentro de ', ROUND(RAND() * 10, 0), ' minutos. ¿Puedo ayudarte con algo más?');
+		END CASE;
+        
+        CASE @actionOption
+			WHEN 1 THEN
+				SET @outputText = CONCAT(@outputText, ' ¿Deseas realizar otra operación de pago ahora?');
+			WHEN 2 THEN
+				SET @outputText = CONCAT(@outputText, ' Si tienes dudas, el soporte está disponible las 24 horas.');
+			WHEN 3 THEN
+				SET @outputText = CONCAT(@outputText, ' ¿Te gustaría guardar este pago en tus favoritos para consultas futuras?');
+		END CASE;
+        
+        INSERT INTO payment_AIresponse (previous_responseid, outputText, transcriptionId, idAIModel)
+		VALUES (@previous_responseid, @outputText, @transcriptionId, @idAIModel);
+        
+		SET @i = @i +1;
+    
+    END WHILE;
+
+END//
+
+DELIMITER ;
+
+call insertiaresponse();
+
+-- CONFIGURACION DE LA IA
+INSERT INTO `paymentdb`.`payment_AISetup` 
+(`callbackPost`, `temporaryKey`, `webSocketClient`, `authToken`, `openapiKey`) 
+VALUES 
+('https://api.example.com/callback', 45, 'ws://example.com/socket', 'abc123authToken', 'xyz456openApiKey');
+
+-- PROCEDIMIENTO QUE LLENA AUDIOS GENERADOS A PARTIR DE UNA RESPUESTA DE IA
+
+
+DELIMITER //
+
+CREATE PROCEDURE insertaudioperAI()
+BEGIN
+
+	SET @i = 0;
+
+	WHILE @i<300 DO
+    
+		SET @random_voice = 'female';
+		SET @AIsetup = 1;
+        SET @AIresponse_input = FLOOR(1 + RAND() * 299); 
+        SET @expires_at = UNIX_TIMESTAMP(NOW()) + FLOOR(RAND() * 1000000);
+        SET @idAIModel = FLOOR(1 + RAND() * 3);
+        SET @audioFileId = FLOOR(1 + RAND() * 299);
+        
+        SET @format = CASE
+            WHEN FLOOR(1 + RAND() * 3) = 1 THEN 'mp4'
+            WHEN FLOOR(1 + RAND() * 3) = 2 THEN 'mp3'
+            ELSE 'wav'
+        END;
+        
+         INSERT INTO payment_audiosperAI
+        (`voice`, `reponseformat`, `payment_idAISetup`, `FK_idAIresponse_input`, `index`, `expires_at`, `idAIModel`, `audioFIleId`)
+        VALUES
+        (@random_voice, @format, @AIsetup, @AIresponse_input, null,@expires_at, @idAIModel, @audioFileId);
+        
+		SET @i = @i +1;
+    END WHILE;
+
+END//
+
+DELIMITER ;
+
+call insertaudioperAI();
+
+-- insert que representa los tipos de estados en la que puede estar una conversacion
+INSERT INTO payment_conversationStatus (`idconversationStatus`, `name`) VALUES
+(1, 'INICIO'),
+(2, 'ESPERANDO_PAGO'),
+(3, 'PROCESANDO_PAGO'),
+(4, 'PAGO_EXITOSO'),
+(5, 'PAGO_RECHAZADO'),
+(6, 'AUTENTICACION'),
+(7, 'FALLO_TELEFONICO'),
+(8, 'CANCELADO'),
+(9, 'ESPERE_INGRESO'),
+(10, 'FINALIZADO');
+
+
+-- PROC que permite almacenar las conversaciones que han sido generadas por la IA
+DELIMITER //
+
+CREATE PROCEDURE insertHistoryConversations()
+BEGIN
+    SET @i = 0;
+    
+    WHILE @i < 60 DO
+        SET @userId = FLOOR(1 + RAND() * 31);
+        SET @idAISetup = 1;
+        SET @tokenQuantity = FLOOR(RAND() * 1000);
+        SET @firstID = CONCAT('FIRST-', FLOOR(RAND() * 10000));
+        SET @lastID = @firstID + 5;
+        SET @finishReason = CASE 
+            WHEN RAND() > 0.8 THEN 'Finished successfully with all tasks completed'
+            WHEN RAND() > 0.6 THEN 'Finished successfully but with minor issues'
+            WHEN RAND() > 0.4 THEN 'Finished successfully, but user encountered some difficulties'
+            WHEN RAND() > 0.2 THEN 'Cancelled by user due to time constraints'
+            ELSE 'Cancelled by user due to technical issues'
+        END;
+        SET @idconversationStatus = FLOOR(1 + RAND() * 10);
+        SET @accuracyLevel = CONCAT(ROUND(RAND() * 100, 2), '%');
+
+        INSERT INTO payment_historyconversations (userId, idAISetup, tokenQuantity, firstID, lastID, finishReason, idconversationStatus, accuracyLevel)
+        VALUES (@userId, @idAISetup, @tokenQuantity, @firstID, @lastID, @finishReason, @idconversationStatus, @accuracyLevel);
+
+        SET @i = @i + 1;
+    END WHILE;
+END //
+
+DELIMITER ;
+
+call insertHistoryConversations();
+
+-- PROC que asocia los mensajes a cada conversacion
+
+DELIMITER //
+
+
+CREATE PROCEDURE insertPaymentAIMessages()
+BEGIN
+		SET @i = 0;
+		SET @idConversation = 1;
+
+		WHILE @i < 300 DO
+
+			SET @FK_messageTypeId = FLOOR(1 + RAND() * 7);
+			SET @role = CASE 
+							WHEN RAND() > 0.5 THEN 'user' 
+							ELSE 'assistant' 
+						END;
+			SET @content = CONCAT(
+							CASE 
+								WHEN RAND() > 0.5 THEN 'Hello, how can I assist you today?'
+								WHEN RAND() > 0.4 THEN 'I’m sorry, I didn’t quite catch that.'
+								WHEN RAND() > 0.3 THEN 'Can you clarify your request, please?'
+								WHEN RAND() > 0.2 THEN 'Please hold on while I process that.'
+								ELSE 'Thank you for your patience, we are working on it.'
+							END
+						);
+		
+			SET @enabled = 1;
+			SET @idconversations =  @idConversation;
+			SET @promptTokens = FLOOR(RAND() * 200) + 1;
+			SET @totalTokens = @promptTokens + FLOOR(RAND() * 100);
+			SET @completionTokens = @totalTokens - @promptTokens;
+			SET @transcriptionId = FLOOR(1 + RAND() * 298);
+			SET @AIresponseId = FLOOR(2 + RAND() * 300);
+			SET @idgenerateaudios = FLOOR(1 + RAND() * 298);
+
+			SET @randomDays = FLOOR(RAND() * 30); -- VA A GENERAR UN DIA RANDOM HASTA 30 QUE VA A SER SUMADO O RESTADO
+			SET @timeStamps = DATE_ADD(NOW(), INTERVAL @randomDays DAY);
+
+			INSERT INTO payment_AIMessages (
+				`FK_messageTypeId`,
+				`role`,
+				`content`,
+				`enabled`,
+				`idconversations`,
+				`timeStamp`,
+				`promptTokens`,
+				`totalTokens`,
+				`completionTokens`,
+				`transcriptionId`,
+				`AIresponseId`,
+				`idgenerateaudios`
+			)
+			VALUES (
+				@FK_messageTypeId,
+				@role,
+				@content,
+				@enabled,
+				@idconversations,
+				@timeStamps,
+				@promptTokens,
+				@totalTokens,
+				@completionTokens,
+				@transcriptionId,
+				@AIresponseId,
+				@idgenerateaudios
+			);
+            
+            SET @idConversation = CASE 
+				WHEN @i%5 = 0 AND @idConversation != 59 THEN @idConversation + 1 
+				ELSE @idConversation
+			 END;
+            
+            SET @i = @i + 1;
+            
+		END WHILE;
+END//
+
+DELIMITER ;
+
+call insertPaymentAIMessages();
+
+-- LOG DE IA
+INSERT INTO `paymentdb`.`payment_eventTypes` (`name`, `enable`)
+VALUES
+    ('Interpretation Error', 1),
+    ('AI Hallucination', 1),
+    ('Invalid Input Error', 1),
+    ('Timeout Error', 1),
+    ('Connection Failure', 1),
+    ('Task Completed Successfully', 1),
+    ('User Query Resolved', 1),
+    ('AI Response Confirmed', 1),
+    ('Data Processed', 1),
+    ('Transaction Successful', 1);
+
+DROP PROCEDURE insertAIpaymentData
+
+DELIMITER //
+
+CREATE PROCEDURE insertAIpaymentData()
+BEGIN
+    SET @i = 0;
+    
+    WHILE @i < 60 DO
+        SET @userId = FLOOR(1 + RAND() * 31);  
+        SET @scheduleId = null; 
+        SET @currencyId = 7; 
+        SET @availablePaymentMethodPerUser = null; 
+        SET @availablePaymentMethodPerServiceId = null; 
+        
+        SET @amount = ROUND(10 + (RAND() * 1000), 2);  
+        SET @description = CONCAT('Payment for service ', FLOOR(1 + RAND() * 10)); 
+        SET @scheduledDate = DATE_ADD(NOW(), INTERVAL FLOOR(RAND() * 30) DAY);  
+        
+        INSERT INTO payment_AIpaymentData (
+            `idpaymentData`, 
+            `amount`, 
+            `description`, 
+            `scheduledDate`, 
+            `userId`, 
+            `scheduleId`, 
+            `currencyId`, 
+            `availablePaymentMethodPerUser`, 
+            `availablePaymentMethodPerServiceId`
+        )
+        VALUES (
+            @i + 1,  -- Use @i for incrementing idpaymentData
+            @amount, 
+            @description, 
+            @scheduledDate, 
+            @userId, 
+            @scheduleId, 
+            @currencyId, 
+            @availablePaymentMethodPerUser, 
+            @availablePaymentMethodPerServiceId
+        );
+        
+        SET @i = @i + 1;
+    END WHILE;
+END//
+
+DELIMITER ;
+
+call insertAIpaymentData();
+
+
+DROP PROCEDURE insertPaymentAnalysisLogs
+DELIMITER //
+
+CREATE PROCEDURE insertPaymentAnalysisLogs()
+BEGIN
+
+	SET @i = 0;
+    
+    WHILE @i < 100 DO
+        -- Generación de valores aleatorios
+        SET @IdpaymentData = FLOOR(1 + RAND() * 60);  -- ID de datos de pago aleatorio
+        SET @IdeventType = FLOOR(1 + RAND() * 5);  -- ID de tipo de evento aleatorio
+        SET @Idconversations = FLOOR(1 + RAND() * 60);  -- ID de conversación aleatorio
+        SET @MessageId = FLOOR(1 + RAND() * 596);  -- ID de mensaje aleatorio
+		SET @timestamp = FROM_UNIXTIME(
+				FLOOR(UNIX_TIMESTAMP(CONCAT(YEAR(NOW()), '-01-01 00:00:00')) + 
+					  RAND() * (UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(CONCAT(YEAR(NOW()), '-01-01 00:00:00'))))
+				);
+        -- Inserción en la tabla payment_paymentAnalysisLogs
+        INSERT INTO payment_paymentAnalysisLogs (
+            `AIanalysisId`,
+            `timestamp`,
+            `idpaymentData`,
+            `ideventType`,
+            `idconversations`,
+            `messageId`
+        ) 
+        VALUES (
+			null,
+            @timestamp,
+            @IdpaymentData,
+            @IdeventType,
+            @Idconversations, 
+            @MessageId
+        );
+
+        SET @i = @i + 1;
+    END WHILE;
+END //
+
+DELIMITER ;
+
+
+call insertPaymentAnalysisLogs();
+
+SELECT * FROM payment_paymentAnalysisLogs;
+
+SELEC
+SET foreign_key_checks = 0;
+TRUNCATE TABLE payment_AIpaymentData;
+
+SET foreign_key_checks = 1;
