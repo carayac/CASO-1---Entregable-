@@ -71,3 +71,33 @@ DELIMITER ;
 
 call InsertScheduledPaymentSub();
 select * from payment_scheduledPayments;
+
+DELIMITER //
+
+CREATE PROCEDURE InsertScheduledPaymentPay()
+BEGIN
+SET @i =0;
+    
+    WHILE @i <= 30 DO
+    
+		-- Declaracion de variables
+        SET @scheduleDetailsId = FLOOR(1+RAND() * 27);               -- se elige uno de los horarios
+        SET @FK_userId = 0;  
+        SET @FK_serviceId = FLOOR(1 + RAND() * 4);                   -- se elige alguno de los 4 servicios
+	SET @amount = RAND() * 500;
+        SET @currencyId = FLOOR(1 + RAND() * 7);                     -- se elige alguna de las 7 monedas
+        
+        SELECT userId INTO @FK_userId FROM payment_users WHERE userId = @i;
+
+	INSERT INTO payment_scheduledPayments (scheduleDetailsId, userId, serviceId, amount, currencyId)
+        VALUES 
+        (@scheduleDetailsId, @FK_userId, @FK_serviceId, @amount, @currencyId);  
+        
+        SET @i = @i + 1;
+    END WHILE;
+END //
+
+DELIMITER ;
+
+call InsertScheduledPaymentPay();
+select * from payment_scheduledPayments;
