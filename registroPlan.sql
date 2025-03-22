@@ -116,3 +116,34 @@ DELIMITER ;
 
 call InsertScheduledPaymentPay();
 select * from payment_scheduledPayments;
+
+
+DELIMITER //
+
+CREATE PROCEDURE InsertPlanPerUser()
+BEGIN
+    SET @i =0;
+    
+    WHILE @i <= 30 DO
+    
+		-- Declaracion de variables
+		SET @adquisitonDate = DATE_ADD('2025-03-01', INTERVAL FLOOR(RAND() * 23) DAY);
+        SET @FK_userId = 0;        
+        SET @FK_scheduledPaymentId = 0;
+        
+        SELECT userId INTO @userId FROM payment_users WHERE userId = @i;
+        SELECT scheduledPaymentId INTO @scheduledPaymentId FROM payment_scheduledPayments WHERE userId = @i LIMIT 1;
+        
+		INSERT INTO payment_plansPerUser (adquisitionDate, FK_planPriceId, FK_scheduledPaymentId, FK_userId)
+        VALUES 
+        (NOW(), 
+        FLOOR((RAND() * 3) + 1),             -- planPriceId de los 3 posibles planes de pago
+        @scheduledPaymentId,  
+		@userId);  
+        
+        SET @i = @i + 1;
+    END WHILE;
+END //
+
+DELIMITER ;
+
