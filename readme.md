@@ -12,7 +12,8 @@
 
 ### ARCHIVOS DE ENTREGA
 
-   **Script de creación de la base de datos: [DIAGRAMA FISICO DE BASES DE DATOS](https://github.com/carayac/CASO-1---Entregable-/blob/main/DIAGRAMA%20CASO%201.pdf)**
-   **Script de llenado de datos: [DIAGRAMA FISICO DE BASES DE DATOS](https://github.com/carayac/CASO-1---Entregable-/blob/main/DIAGRAMA%20CASO%201.pdf)**
+   **Script de creación de la base de datos: [Database creation](https://github.com/carayac/CASO-1---Entregable-/blob/c9fdaa3f14c153501cfacd025b99b108ad6bb53a/Database%20creation.sql)**
    
-   **Script con las consultas: [DOCUMENTACION DEL DISEÑO CASO 1](https://github.com/carayac/CASO-1---Entregable-/blob/main/DOCUMENTACION_CASO1.pdf)**
+   **Script de llenado de datos: [Script de llenado](https://github.com/carayac/CASO-1---Entregable-/blob/main/DIAGRAMA%20CASO%201.pdf)**
+   
+   **Script con las consultas: [Script de consultas](https://github.com/carayac/CASO-1---Entregable-/blob/main/DOCUMENTACION_CASO1.pdf)**
