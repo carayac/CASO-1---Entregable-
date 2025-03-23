@@ -366,7 +366,7 @@ SET @i =1;
         SELECT 365, 'YEAR' INTO @days, @datepart WHERE @scheduleRecurrency = 2; 
         SELECT 14, 'WEEK' INTO @days, @datepart WHERE @scheduleRecurrency = 3; 
         
-        SET @lastExec = DATE_ADD('2025-03-08', INTERVAL FLOOR(RAND() * 15) DAY);         -- ultima fecha en que se pago segun el horario
+        SET @lastExec = DATE_ADD('2025-03-05', INTERVAL FLOOR(RAND() * 15) DAY);         -- ultima fecha en que se pago segun el horario
         SET @nextExec = DATE_ADD(@lastExec, INTERVAL @days DAY);                         -- siguiente fecha en que se pagara segun el horario
         
         INSERT INTO `paymentdb`.`payment_scheduleDetails` (`schedulesDetailsId`,`baseDate`,`datePart`, `lastExecute`, `nextExecute`, `FK_scheduleId`)
