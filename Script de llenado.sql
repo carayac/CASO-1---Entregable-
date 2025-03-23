@@ -19,13 +19,14 @@ VALUES
 (7, 'Costa Rican Colon', 'CRC', '₡');
 
 INSERT INTO payment_ExchangeRates (`exchangeRateid`, `startDate`, `endDate`, `exchangerate`, `enable`, `currentexchangerate`, `FK_currencyIdsource`, `FK_currencyIdDestiny`) VALUES 
-(0, '2023-08-01 10:00:00', NULL, 19.5478, TRUE, TRUE, 1, 2),
-(1, '2023-07-01 09:00:00', '2023-12-01 09:00:00', 0.83, TRUE, FALSE, 2, 3),
-(2, '2023-09-15 08:00:00', NULL, 74.9832, TRUE, TRUE, 1, 4),
-(3, '2023-06-01 11:30:00', '2023-11-01 11:30:00', 0.7365, TRUE, FALSE, 1, 5),
-(4, '2023-10-01 14:00:00', NULL, 22.3015, TRUE, TRUE, 1, 6),
+(0, now(), NULL, 1.08325, TRUE, TRUE, 2, 1),
+(1, now(), NULL, 1.2913, TRUE, TRUE, 3, 1),
+(2, now(), NULL, 0.0067, TRUE, TRUE, 4, 1),
+(3, now(), NULL, 0.049, TRUE, TRUE, 5, 1),
+(4, now(), NULL, 0.01183, TRUE, TRUE, 6, 1),
 (5, now(), NULL, 540, TRUE, TRUE, 1, 7),
 (6, now(), NULL, 0.0019, TRUE, TRUE, 7, 1);
+
 
 INSERT INTO `paymentdb`.`payment_Countries` (`countryId`,`FK_currencyId`,`name`,`phoneCode`)
 VALUES 
