@@ -59,9 +59,9 @@
 
 - Consulta 4.3
 
-# TOP 15 USUARIOS QUE MAS USO LE DAN A LA APLICACION
+**TOP 15 USUARIOS QUE MAS USO LE DAN A LA APLICACION**
 
-| firstName  | lastName    | username               | activityCount |
+| Nombre     | Apellido    | username               | activityCount |
 |------------|-------------|------------------------|---------------|
 | Alejandro  | Fernández   | AlejandroFernández18  | 8             |
 | Ana        | Ruiz        | AnaRuiz1              | 13            |
@@ -80,9 +80,9 @@
 | Sofía      | Mendoza     | SofíaMendoza9         | 9             |
 
 
-# TOP 15 USUARIOS QUE MENOS USO LE DAN A LA APLICACION
+**TOP 15 USUARIOS QUE MENOS USO LE DAN A LA APLICACION**
 
-| firstName  | lastName    | username              | activityCount |
+| Nombre     | Apellido    | username              | activityCount |
 |------------|-------------|-----------------------|---------------|
 | Ana        | López       | AnaLópez31           | 0             |
 | Carlos     | Molina      | CarlosMolina30       | 0             |
@@ -99,6 +99,16 @@
 | Sofía      | Díaz        | SofíaDíaz22          | 6             |
 | Roberto    | Gómez       | RobertoGómez15       | 6             |
 | Juan       | Alonso      | JuanAlonso2          | 7             |
+
+- Consulta 4.4
+  
+| TipoFallo             | TotalOcurrencias | PorcentajeTotal | FechaInicio | FechaFinal |
+|-----------------------|------------------|-----------------|-------------|------------|
+| Timeout Error         | 15              | 24.19%          | 2025-01-01  | 2025-03-01 |
+| Connection Failure    | 14              | 22.58%          | 2025-01-01  | 2025-03-01 |
+| Invalid Input Error   | 14              | 22.58%          | 2025-01-01  | 2025-03-01 |
+| Interpretation Error  | 10              | 16.13%          | 2025-01-01  | 2025-03-01 |
+| AI Hallucination      | 9               | 14.52%          | 2025-01-01  | 2025-03-01 |
 
 ### ARCHIVOS DE ENTREGA
 
