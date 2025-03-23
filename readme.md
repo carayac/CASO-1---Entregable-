@@ -16,4 +16,4 @@
    
    **Script de llenado de datos: [Script de llenado](https://github.com/carayac/CASO-1---Entregable-/blob/399a40e040ca7bafa251516a9b4ce105cac85c3a/Script%20de%20llenado.sql)**
    
-   **Script con las consultas: [Script de consultas](https://github.com/carayac/CASO-1---Entregable-/blob/main/DOCUMENTACION_CASO1.pdf)**
+   **Script con las consultas: [Script de consultas](https://github.com/carayac/CASO-1---Entregable-/blob/8b4e91b41b88c5589590025d8f824c216f77e2a2/Script%20de%20consultas.sql)**
