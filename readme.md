@@ -32,6 +32,16 @@
 | 18     | Miguel Ruiz          | Russia         | Miguel.Ruiz.18@gmail.com      | 37.15              | British Pound Sterling   | 74061.000000                |
 | 19     | David López          | Japan          | David.Lopez.19@gmail.com      | 53.34              | Euro                     | 82803.600000                |
 | 20     | María Castro         | United States  | Maria.Castro.20@gmail.com     | 0.00               | Ninguna                  | 0.000000                    |
+| 21     | Luis Morales         | Mexico         | Luis.Morales.21@gmail.com     | 0.00               | Ninguna                  | 0.000000                    |
+| 22     | Roberto Díaz         | France         | Roberto.Díaz.22@gmail.com     | 280.61             | Mexican Peso             | 151529.400000               |
+| 23     | Laura González       | United States  | Laura.González.23@gmail.com   | 154.19             | Euro                     | 83262.600000                |
+| 24     | Roberto Ramírez      | Costa Rica     | Roberto.Ramírez.24@gmail.com  | 243.93             | Mexican Peso             | 131722.200000               |
+| 25     | Marta Ruiz           | Costa Rica     | Marta.Ruiz.25@gmail.com       | 199.71             | Japanese Yen             | 107843.400000               |
+| 26     | Alejandro Mendoza    | Spain          | Alejandro.Mendoza.26@gmail.com| 0.00               | Ninguna                  | 0.000000                    |
+| 27     | Miguel Díaz          | Russia         | Miguel.Díaz.27@gmail.com      | 0.00               | Ninguna                  | 0.000000                    |
+| 28     | Carmen Ruiz          | United States  | Carmen.Ruiz.28@gmail.com      | 0.00               | Ninguna                  | 0.000000                    |
+| 29     | Carmen Ruiz          | Mexico         | Carmen.Ruiz.29@gmail.com      | 105.68             | Japanese Yen             | 57067.200000                |
+| 30     | Francisco Sánchez    | France         | Francisco.Sánchez.30@gmail.com| 0.00               | Ninguna                  | 0.000000                    |
 
 
 
