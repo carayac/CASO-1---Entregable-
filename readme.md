@@ -45,13 +45,18 @@
 | 30     | Francisco Sánchez    | France         | Francisco.Sánchez.30@gmail.com| 0.00               | Ninguna                  | 0.000000                    |
 
 - Consulta 4.2
+
 | userId | NombreCompleto       | Email                          | FechaDelUltimoPago | FechaDelSiguientePago | DiasHastaElPago |
 |--------|----------------------|--------------------------------|---------------------|-----------------------|-----------------|
 | 1      | Laura Mendoza        | Laura.Mendoza.1@gmail.com     | 2025-03-08          | 2025-04-07            | 15              |
 | 2      | Carmen Morales       | Carmen.Morales.2@gmail.com    | 2025-03-08          | 2025-04-07            | 15              |
 | 3      | Sofía Ruiz           | Sofia.Ruiz.3@gmail.com        | 2025-03-08          | 2025-04-07            | 15              |
 | 4      | Andrés Ramos         | Andres.Ramos.4@gmail.com      | 2025-03-08          | 2025-04-07            | 15              |
-| 5      | Rosa Ramos           | Rosa.Ramos.5@gmail.com        | 2025-03-08         
+| 5      | Rosa Ramos           | Rosa.Ramos.5@gmail.com        | 2025-03-08          | 2025-04-07            | 15              |
+| 6      | José Ruiz            | Jose.Ruiz.6@gmail.com         | 2025-03-08          | 2025-04-07            | 15              |
+| 7      | Ana Molina           | Ana.Molina.7@gmail.com        | 2025-03-08          | 2025-04-07            | 15              |
+| 8      | Francisco López      | Francisco.Lopez.8@gmail.com   | 2025-03-08          | 2025-04-07            | 15              |
+
 
 
 ### ARCHIVOS DE ENTREGA
