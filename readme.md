@@ -114,7 +114,7 @@
 
 ### ARCHIVOS DE ENTREGA
 
-   **Script de creación de la base de datos: [Database creation](https://github.com/carayac/CASO-1---Entregable-/blob/c9fdaa3f14c153501cfacd025b99b108ad6bb53a/Database%20creation.sql)**
+   **Script de creación de la base de datos: [Database creation](https://github.com/carayac/CASO-1---Entregable-/blob/main/Database%20creation.sql)**
    
    **Script de llenado de datos: [Script de llenado](https://github.com/carayac/CASO-1---Entregable-/blob/399a40e040ca7bafa251516a9b4ce105cac85c3a/Script%20de%20llenado.sql)**
    
