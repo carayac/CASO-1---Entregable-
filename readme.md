@@ -57,7 +57,48 @@
 | 7      | Ana Molina           | Ana.Molina.7@gmail.com        | 2025-03-08          | 2025-04-07            | 15              |
 | 8      | Francisco López      | Francisco.Lopez.8@gmail.com   | 2025-03-08          | 2025-04-07            | 15              |
 
+- Consulta 4.3
 
+# TOP 15 USUARIOS QUE MAS USO LE DAN A LA APLICACION
+
+| firstName  | lastName    | username               | activityCount |
+|------------|-------------|------------------------|---------------|
+| Alejandro  | Fernández   | AlejandroFernández18  | 8             |
+| Ana        | Ruiz        | AnaRuiz1              | 13            |
+| Beatriz    | Vargas      | BeatrizVargas28       | 11            |
+| Cristina   | Rodríguez   | CristinaRodríguez6    | 10            |
+| Elena      | Ruiz        | ElenaRuiz17           | 11            |
+| Fernando   | Álvarez     | FernandoÁlvarez10     | 12            |
+| Fernando   | Martínez    | FernandoMartínez21    | 9             |
+| Isabel     | Ruiz        | IsabelRuiz3           | 8             |
+| Javier     | Ramos       | JavierRamos14         | 8             |
+| Juan       | Alonso      | JuanAlonso2           | 7             |
+| Laura      | Torres      | LauraTorres7          | 13            |
+| Laura      | López       | LauraLópez20          | 12            |
+| Marta      | Alonso      | MartaAlonso29         | 11            |
+| Pedro      | Ruiz        | PedroRuiz13           | 11            |
+| Sofía      | Mendoza     | SofíaMendoza9         | 9             |
+
+
+# TOP 15 USUARIOS QUE MENOS USO LE DAN A LA APLICACION
+
+| firstName  | lastName    | username              | activityCount |
+|------------|-------------|-----------------------|---------------|
+| Ana        | López       | AnaLópez31           | 0             |
+| Carlos     | Molina      | CarlosMolina30       | 0             |
+| Eduardo    | Ruiz        | EduardoRuiz26        | 2             |
+| Luis       | Morales     | LuisMorales24        | 2             |
+| Tomás      | Castro      | TomásCastro23        | 2             |
+| Laura      | Ruiz        | LauraRuiz4           | 3             |
+| Francisco  | Torres      | FranciscoTorres16    | 4             |
+| Ricardo    | Navarro     | RicardoNavarro11     | 4             |
+| Isabel     | Sánchez     | IsabelSánchez5       | 4             |
+| Fernando   | Díaz        | FernandoDíaz25       | 5             |
+| Andrés     | Romero      | AndrésRomero19       | 5             |
+| María      | Vargas      | MaríaVargas27        | 6             |
+| Sofía      | Díaz        | SofíaDíaz22          | 6             |
+| Roberto    | Gómez       | RobertoGómez15       | 6             |
+| Juan       | Alonso      | JuanAlonso2          | 7             |
 
 ### ARCHIVOS DE ENTREGA
 
