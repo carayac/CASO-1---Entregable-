@@ -8,6 +8,31 @@
 
 **Curso de bases de datos I ' 1S 2025** 
 
+### Tablas
+
+| userId | NombreCompleto       | País           | Email                          | PagosSuscripciones | MonedaOriginal           | PagosSuscripcionesEnColones |
+|--------|----------------------|----------------|--------------------------------|--------------------|--------------------------|-----------------------------|
+| 1      | Laura Mendoza        | Spain          | Laura.Mendoza.1@gmail.com     | 74.85              | Mexican Peso             | 94419.000000                |
+| 2      | Carmen Morales       | Japan          | Carmen.Morales.2@gmail.com    | 90.24              | Japanese Yen             | 156729.600000               |
+| 3      | Sofía Ruiz           | Spain          | Sofia.Ruiz.3@gmail.com        | 0.00               | Ninguna                  | 0.000000                    |
+| 4      | Andrés Ramos         | France         | Andres.Ramos.4@gmail.com      | 167.87             | Euro                     | 90649.800000                |
+| 5      | Rosa Ramos           | Russia         | Rosa.Ramos.5@gmail.com        | 59.42              | Mexican Peso             | 32086.800000                |
+| 6      | José Ruiz            | Russia         | Jose.Ruiz.6@gmail.com         | 26.70              | Euro                     | 25218.000000                |
+| 7      | Ana Molina           | Mexico         | Ana.Molina.7@gmail.com        | 29.87              | Mexican Peso             | 39106.800000                |
+| 8      | Francisco López      | France         | Francisco.Lopez.8@gmail.com   | 19.87              | Japanese Yen             | 64729.800000                |
+| 9      | Javier Torres        | France         | Javier.Torres.9@gmail.com     | 115.15             | Mexican Peso             | 116181.000000               |
+| 10     | Fernando González    | France         | Fernando.Gonzalez.10@gmail.com| 75.00              | Japanese Yen             | 94500.000000                |
+| 11     | Patricia Torres      | Costa Rica     | Patricia.Torres.11@gmail.com  | 0.00               | Ninguna                  | 0.000000                    |
+| 12     | Laura Hernández      | Mexico         | Laura.Hernandez.12@gmail.com  | 134.24             | Japanese Yen             | 180489.000000               |
+| 13     | Laura Romero         | Spain          | Laura.Romero.13@gmail.com     | 9.51               | Japanese Yen             | 26735.400000                |
+| 14     | Ana Hernández        | Russia         | Ana.Hernandez.14@gmail.com    | 0.00               | Ninguna                  | 0.000000                    |
+| 15     | María Flores         | Russia         | Maria.Flores.15@gmail.com     | 0.00               | Ninguna                  | 0.000000                    |
+| 16     | Roberto Álvarez      | United States  | Roberto.Alvarez.16@gmail.com  | 15.72              | British Pound Sterling   | 14428.800000                |
+| 17     | Lucía Flores         | Spain          | Lucia.Flores.17@gmail.com     | 71.71              | Mexican Peso             | 33323.400000                |
+| 18     | Miguel Ruiz          | Russia         | Miguel.Ruiz.18@gmail.com      | 37.15              | British Pound Sterling   | 74061.000000                |
+| 19     | David López          | Japan          | David.Lopez.19@gmail.com      | 53.34              | Euro                     | 82803.600000                |
+| 20     | María Castro         | United States  | Maria.Castro.20@gmail.com     | 0.00               | Ninguna                  | 0.000000                    |
+
 
 
 ### ARCHIVOS DE ENTREGA
