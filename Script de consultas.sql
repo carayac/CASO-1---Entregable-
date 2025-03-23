@@ -69,3 +69,97 @@ INNER JOIN (
 		INNER JOIN payment_scheduleDetails ON payment_scheduledPayments.scheduleId = payment_scheduleDetails.schedulesDetailsId    
 	WHERE now() > DATE_SUB(nextExecute, INTERVAL 15 DAY)
 ) AS planPerUserTable ON userTable.userId = planPerUserTable.FK_userId;
+
+
+
+-- ---------------------
+-- CONSULTA 4.3
+-- ---------------------
+
+-- ranking del top 15 de usuarios que mas uso le dan a la aplicacion
+-- se analiza por medio de la actividad de login y pagos realizados por el usuario
+
+
+WITH UserActivityMayorUso AS (
+    SELECT 
+        pu.userId,
+        pu.firstName,
+        pu.lastName,
+        pur.username,
+        COUNT(pl.logId) AS activityCount
+    FROM payment_users pu
+    INNER JOIN payment_userRoles pur ON pu.userId = pur.userId
+    LEFT JOIN payment_Logs pl ON pur.username = pl.username -- Relación correcta con logs
+    WHERE pu.enabled = 1 AND pur.deleted = 0
+      AND (pl.FK_logTypeId IN (1, 2, 8, 9) OR pl.FK_logTypeId IS NULL) -- Incluye usuarios sin logs
+    GROUP BY pu.userId, pu.firstName, pu.lastName, pur.username
+)
+(
+    -- Top 15 usuarios con más actividad
+    SELECT firstName, lastName, username, activityCount 
+    FROM UserActivityMayorUso
+    ORDER BY activityCount DESC
+    LIMIT 15
+);
+
+-- ranking del top 15 de usuarios que menos uso le dan a la aplicacion
+-- se analiza por medio de la actividad de login y pagos realizados por el usuario
+
+WITH UserActivityMenosUso AS (
+	
+    SELECT 
+        pu.userId,
+        pu.firstName,
+        pu.lastName,
+        pur.username,
+        COUNT(pl.logId) AS activityCount
+    FROM payment_users pu
+    INNER JOIN payment_userRoles pur ON pu.userId = pur.userId
+    LEFT JOIN payment_Logs pl ON pur.username = pl.username -- Relación correcta con logs
+    WHERE pu.enabled = 1 AND pur.deleted = 0
+      AND (pl.FK_logTypeId IN (1, 2, 8, 9) OR pl.FK_logTypeId IS NULL) -- Incluye usuarios sin logs
+    GROUP BY pu.userId, pu.firstName, pu.lastName, pur.username
+)
+(
+    -- Top 15 usuarios con menos actividad
+    SELECT firstName, lastName, username, activityCount 
+    FROM UserActivityMenosUso
+    ORDER BY activityCount ASC
+    LIMIT 15
+);
+
+
+-- ---------------------
+-- CONSULTA 4.4
+-- ---------------------
+
+-- variables que definen el rango de fechas
+SET @fechaInicio = '2025-02-01';
+SET @fechaFinal = '2025-03-01';
+
+SELECT 
+    ErrorOccurrences.TipoFallo,
+    SUM(ErrorOccurrences.errorCount) AS TotalOcurrencias,
+    CONCAT(
+        ROUND(
+            (SUM(ErrorOccurrences.errorCount) / (SELECT COUNT(paymentAnalysisId) 
+                                                  FROM payment_paymentAnalysisLogs
+                                                  WHERE timestamp BETWEEN @fechaInicio AND @fechaFinal)) 
+            * 100, 2
+        ), 
+        '%'
+    ) AS PorcentajeTotal,
+    @fechaInicio AS FechaInicio,
+    @fechaFinal AS FechaFinal
+FROM (
+    SELECT 
+        pelt.name AS TipoFallo,
+        COUNT(pal.paymentAnalysisId) AS errorCount
+    FROM payment_paymentAnalysisLogs pal
+    INNER JOIN payment_eventTypes pelt ON pal.ideventType = pelt.ideventType
+    INNER JOIN payment_historyconversations phc ON pal.idconversations = phc.idconversations
+    WHERE pal.timestamp BETWEEN @fechaInicio AND @fechaFinal
+    GROUP BY pelt.name
+) AS ErrorOccurrences
+GROUP BY ErrorOccurrences.TipoFallo
+ORDER BY TotalOcurrencias DESC;
