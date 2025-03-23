@@ -8,7 +8,8 @@
 
 **Curso de bases de datos I ' 1S 2025** 
 
-### Tablas
+### DATA TABLES
+- Consulta 4.1
 
 | userId | NombreCompleto       | País           | Email                          | PagosSuscripciones | MonedaOriginal           | PagosSuscripcionesEnColones |
 |--------|----------------------|----------------|--------------------------------|--------------------|--------------------------|-----------------------------|
@@ -43,6 +44,14 @@
 | 29     | Carmen Ruiz          | Mexico         | Carmen.Ruiz.29@gmail.com      | 105.68             | Japanese Yen             | 57067.200000                |
 | 30     | Francisco Sánchez    | France         | Francisco.Sánchez.30@gmail.com| 0.00               | Ninguna                  | 0.000000                    |
 
+- Consulta 4.2
+| userId | NombreCompleto       | Email                          | FechaDelUltimoPago | FechaDelSiguientePago | DiasHastaElPago |
+|--------|----------------------|--------------------------------|---------------------|-----------------------|-----------------|
+| 1      | Laura Mendoza        | Laura.Mendoza.1@gmail.com     | 2025-03-08          | 2025-04-07            | 15              |
+| 2      | Carmen Morales       | Carmen.Morales.2@gmail.com    | 2025-03-08          | 2025-04-07            | 15              |
+| 3      | Sofía Ruiz           | Sofia.Ruiz.3@gmail.com        | 2025-03-08          | 2025-04-07            | 15              |
+| 4      | Andrés Ramos         | Andres.Ramos.4@gmail.com      | 2025-03-08          | 2025-04-07            | 15              |
+| 5      | Rosa Ramos           | Rosa.Ramos.5@gmail.com        | 2025-03-08         
 
 
 ### ARCHIVOS DE ENTREGA
