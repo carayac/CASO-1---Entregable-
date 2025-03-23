@@ -134,7 +134,7 @@ WITH UserActivityMenosUso AS (
 -- ---------------------
 
 -- variables que definen el rango de fechas
-SET @fechaInicio = '2025-02-01';
+SET @fechaInicio = '2025-01-01';
 SET @fechaFinal = '2025-03-01';
 
 SELECT 
@@ -157,9 +157,9 @@ FROM (
         COUNT(pal.paymentAnalysisId) AS errorCount
     FROM payment_paymentAnalysisLogs pal
     INNER JOIN payment_eventTypes pelt ON pal.ideventType = pelt.ideventType
-    INNER JOIN payment_historyconversations phc ON pal.idconversations = phc.idconversations
     WHERE pal.timestamp BETWEEN @fechaInicio AND @fechaFinal
     GROUP BY pelt.name
 ) AS ErrorOccurrences
 GROUP BY ErrorOccurrences.TipoFallo
 ORDER BY TotalOcurrencias DESC;
+
