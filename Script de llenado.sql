@@ -24,8 +24,8 @@ INSERT INTO payment_ExchangeRates (`exchangeRateid`, `startDate`, `endDate`, `ex
 (2, now(), NULL, 0.0067, TRUE, TRUE, 4, 1),
 (3, now(), NULL, 0.049, TRUE, TRUE, 5, 1),
 (4, now(), NULL, 0.01183, TRUE, TRUE, 6, 1),
-(5, now(), NULL, 540, TRUE, TRUE, 1, 7),
-(6, now(), NULL, 0.0019, TRUE, TRUE, 7, 1);
+(5, now(), NULL, 0.0019, TRUE, TRUE, 7, 1),
+(6, now(), NULL, 500.19, TRUE, TRUE, 1, 7);
 
 
 INSERT INTO `paymentdb`.`payment_Countries` (`countryId`,`FK_currencyId`,`name`,`phoneCode`)
