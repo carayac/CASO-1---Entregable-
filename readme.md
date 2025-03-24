@@ -13,15 +13,15 @@
 
 | userId | Nombre Completo     | País   | Email         | PagosSuscripciones | MonedaOriginal    | SuscripcionesEnDolares | PagosSuscripcionesEnColones |
 |--------|---------------------|--------|----------------------------|---------------------|-------------------------------|--------------------------|-------------------------------|
-| 1      | Laura Mendoza       | Spain  | Laura.Mendoza.1@gmail.com  | 174.85 | Mexican Peso    | 8.57  | 4285.45      |
-| 2      | Carmen Morales      | Japan  | Carmen.Morales.2@gmail.com | 290.24              | Euro, Japanese Yen            | 134.44                   | 67246.43                      |
-| 3      | Sofía Ruiz          | Spain  | Sofia.Ruiz.3@gmail.com     | 0.00                | Ninguna                       | 0.00                     | 0.00                          |
-| 4      | Andrés Ramos        | France | Andrés.Ramos.4@gmail.com   | 167.87              | Euro                          | 181.85                   | 90961.34                      |
-| 5      | Rosa Ramos          | Russia | Rosa.Ramos.5@gmail.com     | 59.42               | Japanese Yen, Mexican Peso    | 2.84                     | 1420.37                       |
-| 6      | José Ruiz           | Russia | José.Ruiz.6@gmail.com      | 46.70               | Euro                          | 50.59                    | 25304.67                      |
-| 7      | Ana Molina          | Mexico | Ana.Molina.7@gmail.com     | 72.42               | Mexican Peso                  | 3.55                     | 1774.96                       |
-| 8      | Francisco López     | France | Francisco.López.8@gmail.com| 119.87              | Japanese Yen                  | 0.80                     | 401.72                        |
-| 9      | Javier Torres        | France       | Javier.Torres.9@gmail.com    | 215.15              | Japanese Yen, Mexican Peso  | 6.80                     | 3400.06                       |
+| 1 | Laura Mendoza  | Spain  | Laura.Mendoza.1@gmail.com  | 174.85  | Mexican Peso          | 8.57     | 4285.45    |
+| 2 | Carmen Morales | Japan  | Carmen.Morales.2@gmail.com | 290.24  | Euro, Japanese Yen    | 134.44   | 67246.43   |
+| 3 | Sofía Ruiz     | Spain  | Sofia.Ruiz.3@gmail.com     | 0.00    | Ninguna               | 0.00     | 0.00       |
+| 4 | Andrés Ramos        | France | Andrés.Ramos.4@gmail.com   | 167.87              | Euro                          | 181.85                   | 90961.34                      |
+| 5 | Rosa Ramos          | Russia | Rosa.Ramos.5@gmail.com     | 59.42               | Japanese Yen, Mexican Peso    | 2.84                     | 1420.37                       |
+| 6 | José Ruiz           | Russia | José.Ruiz.6@gmail.com      | 46.70               | Euro                          | 50.59                    | 25304.67                      |
+| 7 | Ana Molina          | Mexico | Ana.Molina.7@gmail.com     | 72.42               | Mexican Peso                  | 3.55                     | 1774.96                       |
+| 8 | Francisco López     | France | Francisco.López.8@gmail.com| 119.87              | Japanese Yen                  | 0.80                     | 401.72                        |
+| 9 | Javier Torres        | France       | Javier.Torres.9@gmail.com    | 215.15              | Japanese Yen, Mexican Peso  | 6.80                     | 3400.06                       |
 | 10     | Fernando González    | France       | Fernando.Gonzalez.10@gmail.com | 175.00            | Japanese Yen                | 1.17                     | 586.47                        |
 | 11     | Patricia Torres      | Costa Rica   | Patricia.Torres.11@gmail.com | 0.00                | Ninguna                     | 0.00                     | 0.00                          |
 | 12     | Laura Hernández      | Mexico       | Laura.Hernandez.12@gmail.com | 334.24              | British Pound Sterling      | 131.55                   | 65798.62                      |
