@@ -29,8 +29,20 @@
 | 14 | Ana Hernández     | Russia     | Ana.Hernandez.14@gmail.com   | 0.00     | Ninguna                    | 0.00     | 0.00       |
 | 15 | María Flores      | Russia     | Maria.Flores.15@gmail.com    | 0.00     | Ninguna                    | 0.00     | 0.00       |
 | 16 | Roberto Álvarez   | United States | Roberto.Alvarez.16@gmail.com | 26.72 | British Pound Sterling     | 34.50    | 17258.32   |
-
-
+| 17 | Lucía Flores      | Spain      | Lucia.Flores.17@gmail.com    | 61.71    | Mexican Peso               | 3.02     | 1512.47    |
+| 18 | Miguel Ruiz       | Russia     | Miguel.Ruiz.18@gmail.com     | 137.15   | British Pound Sterling     | 177.10   | 88584.55   |
+| 19 | David López       | Japan      | David.Lopez.19@gmail.com     | 153.34   | Euro                       | 166.11   | 83088.17   |
+| 20 | María Castro      | United States | Maria.Castro.20@gmail.com | 0.00     | Ninguna                    | 0.00     | 0.00       |
+| 21 | Luis Morales      | Mexico     | Luis.Morales.21@gmail.com    | 0.00     | Ninguna                    | 0.00     | 0.00       |
+| 22 | Roberto Díaz      | France     | Roberto.Diaz.22@gmail.com    | 280.61   | Japanese Yen, Mexican Peso | 8.41     | 4206.57    |
+| 23 | Laura González    | United States | Laura.Gonzalez.23@gmail.com | 154.19 | Euro                       | 167.03   | 83548.75   |
+| 24 | Roberto Ramírez   | Costa Rica | Roberto.Ramirez.24@gmail.com | 243.93   | Euro, Mexican Peso         | 258.56   | 129329.49  |
+| 25 | Marta Ruiz        | Costa Rica | Marta.Ruiz.25@gmail.com      | 199.71   | Euro, Japanese Yen         | 57.89    | 28956.93   |
+| 26 | Alejandro Mendoza | Spain      | Alejandro.Mendoza.26@gmail.com | 0.00   | Ninguna                    | 0.00     | 0.00       |
+| 27 | Miguel Díaz       | Russia     | Miguel.Diaz.27@gmail.com     | 0.00     | Ninguna                    | 0.00     | 0.00       |
+| 28 | Carmen Ruiz       | United States | Carmen.Ruiz.28@gmail.com  | 0.00     | Ninguna                    | 0.00     | 0.00       |
+| 29 | Carmen Ruiz       | Mexico     | Carmen.Ruiz.29@gmail.com     | 105.68   | Japanese Yen               | 0.71     | 354.16     |
+| 30 | Francisco Sánchez | France     | Francisco.Sanchez.30@gmail.com | 0.00   | Ninguna                    | 0.00     | 0.00       |
 
 - Consulta 4.2
 
