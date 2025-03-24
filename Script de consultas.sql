@@ -10,8 +10,9 @@ SELECT userTable.userId,
         contactTable.Email,
         coalesce(transactionTable.PagosSuscripciones, 0) AS PagosSuscripciones,
         coalesce(transactionTable.MonedaOriginal, 'Ninguna') AS MonedaOriginal,
-        -- Esta linea convierte el Pago de la moneda original a Colones 
-        (coalesce(transactionTable.PagosSuscripciones, 0) * (SELECT exchangeRate FROM payment_exchangeRates WHERE exchangeRateId = 5)) AS PagosSuscripcionesEnColones
+        ROUND(coalesce(transactionTable.PagosSuscripcionesEnDolares, 0),2) AS SuscripcionesEnDolares,
+        -- Esta linea convierte el Pago de la moneda en dolares a Colones con dos decimales de precision
+        ROUND((coalesce(transactionTable.PagosSuscripcionesEnDolares, 0) * (SELECT exchangeRate FROM payment_exchangeRates WHERE exchangeRateId = 6)),2) AS PagosSuscripcionesEnColones
 FROM 
 (
 	SELECT userId, CONCAT(firstName, ' ', lastName) AS NombreCompleto, FK_countryId
@@ -28,11 +29,11 @@ INNER JOIN (
 	WHERE FK_contactInfoTypesId = 1                                       -- 1 es tipo Email
 ) AS contactTable ON userTable.userId = contactTable.FK_userId
 LEFT JOIN (                                                               -- Se realiza un LEFT JOIN para ver todos los usuarios
-	SELECT SUM(amount) AS PagosSuscripciones, FK_userId, MAX(name) AS MonedaOriginal,
-    CASE 
-	WHEN MAX(FK_currencyIdsource) > 1 THEN COALESCE(SUM(amount),0) * MAX(exchangeRate)    
-    ELSE SUM(amount)
-	END AS PagosSuscripcionesEnDolares                            -- Se convierte todo en dolares
+	SELECT SUM(amount) AS PagosSuscripciones, FK_userId, GROUP_CONCAT(DISTINCT name SEPARATOR ', ') AS MonedaOriginal,
+    SUM(CASE 
+	WHEN FK_currencyIdsource > 1 THEN amount * exchangeRate
+    ELSE amount
+	END) AS PagosSuscripcionesEnDolares                            -- Se convierte todo en dolares
     
 	FROM payment_transactions
     INNER JOIN payment_exchangeRates ON payment_transactions.FK_exchangeRateId = payment_exchangeRates.exchangeRateId
@@ -40,6 +41,7 @@ LEFT JOIN (                                                               -- Se 
 	WHERE YEAR(transDateTime) >= 2024 and FK_transSubTypeId = 1            -- Se asegura que los pagos sean de 2024 en adelante y
     GROUP BY FK_userId                                                     -- que sean pagos para suscripciones (transSubType = 1 es suscripcion)
 ) AS transactionTable ON userTable.userId = transactionTable.FK_userId;
+
 
 -- ---------------------
 -- CONSULTA 4.2
