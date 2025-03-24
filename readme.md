@@ -45,7 +45,7 @@
 | 30 | Francisco Sánchez | France     | Francisco.Sanchez.30@gmail.com | 0.00   | Ninguna                    | 0.00     | 0.00       |
 
 - Consulta 4.2
-Esta tabla fue realizada el 2025-03-24
+(Esta tabla fue realizada el 2025-03-24)
 
 | userId | NombreCompleto       | Email                       | FechaDelUltimoPago     | FechaDelSiguientePago  | DiasHastaElPago |
 |--------|----------------------|-----------------------------|------------------------|------------------------|-----------------|
