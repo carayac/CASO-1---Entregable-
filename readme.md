@@ -45,6 +45,27 @@
 | 30 | Francisco Sánchez | France     | Francisco.Sanchez.30@gmail.com | 0.00   | Ninguna                    | 0.00     | 0.00       |
 
 - Consulta 4.2
+Esta tabla fue realizada el 2025-03-24
+
+| userId | NombreCompleto       | Email                       | FechaDelUltimoPago     | FechaDelSiguientePago  | DiasHastaElPago |
+|--------|----------------------|-----------------------------|------------------------|------------------------|-----------------|
+| 2      | Carmen Morales       | Carmen.Morales.2@gmail.com  | 2025-03-07 00:00:00    | 2025-04-06 00:00:00    | 13              |
+| 4      | Andrés Ramos         | Andrés.Ramos.4@gmail.com    | 2025-03-07 00:00:00    | 2025-04-06 00:00:00    | 13              |
+| 6      | José Ruiz            | José.Ruiz.6@gmail.com       | 2025-03-05 00:00:00    | 2025-04-04 00:00:00    | 11              |
+| 7      | Ana Molina           | Ana.Molina.7@gmail.com      | 2025-03-05 00:00:00    | 2025-04-04 00:00:00    | 11              |
+| 8      | Francisco López      | Francisco.López.8@gmail.com | 2025-03-05 00:00:00    | 2025-04-04 00:00:00    | 11              |
+| 10     | Fernando González    | Fernando.Gonzalez.10@gmail.com | 2025-03-05 00:00:00 | 2025-04-04 00:00:00    | 11              |
+| 12     | Laura Hernández      | Laura.Hernandez.12@gmail.com | 2025-03-02 00:00:00   | 2025-04-01 00:00:00    | 8               |
+| 13     | Laura Romero         | Laura.Romero.13@gmail.com   | 2025-03-09 00:00:00    | 2025-04-08 00:00:00    | 15              |
+| 16     | Roberto Álvarez      | Roberto.Álvarez.16@gmail.com | 2025-03-07 00:00:00    | 2025-04-06 00:00:00    | 13              |
+| 17     | Lucía Flores         | Lucia.Flores.17@gmail.com    | 2025-03-07 00:00:00    | 2025-04-06 00:00:00    | 13              |
+| 18     | Miguel Ruiz          | Miguel.Ruiz.18@gmail.com     | 2025-03-05 00:00:00    | 2025-04-04 00:00:00    | 11              |
+| 19     | David López          | David.Lopez.19@gmail.com     | 2025-03-06 00:00:00    | 2025-04-05 00:00:00    | 12              |
+| 20     | María Castro         | Maria.Castro.20@gmail.com    | 2025-03-09 00:00:00    | 2025-04-08 00:00:00    | 15              |
+| 26     | Alejandro Mendoza    | Alejandro.Mendoza.26@gmail.com | 2025-03-09 00:00:00 | 2025-04-08 00:00:00    | 15              |
+| 27     | Miguel Díaz          | Miguel.Diaz.27@gmail.com     | 2025-03-05 00:00:00    | 2025-04-04 00:00:00    | 11              |
+| 28     | Carmen Ruiz          | Carmen.Ruiz.28@gmail.com     | 2025-03-05 00:00:00    | 2025-04-04 00:00:00    | 11              |
+| 30     | Francisco Sánchez    | Francisco.Sánchez.30@gmail.com | 2025-03-03 00:00:00 | 2025-04-02 00:00:00    | 9               |
 
 | userId | NombreCompleto       | Email                          | FechaDelUltimoPago | FechaDelSiguientePago | DiasHastaElPago |
 |--------|----------------------|--------------------------------|---------------------|-----------------------|-----------------|
