@@ -11,9 +11,9 @@
 ### DATA TABLES
 - Consulta 4.1
 
-| userId | Nombre Completo     | País   | Email                      | PagosSuscripciones | MonedaOriginal          | SuscripcionesEnDolares | PagosSuscripcionesEnColones |
+| userId | Nombre Completo     | País   | Email         | PagosSuscripciones | MonedaOriginal    | SuscripcionesEnDolares | PagosSuscripcionesEnColones |
 |--------|---------------------|--------|----------------------------|---------------------|-------------------------------|--------------------------|-------------------------------|
-| 1      | Laura Mendoza       | Spain  | Laura.Mendoza.1@gmail.com  | 174.85              | Mexican Peso                  | 8.57                     | 4285.45                       |
+| 1      | Laura Mendoza       | Spain  | Laura.Mendoza.1@gmail.com  | 174.85 | Mexican Peso    | 8.57  | 4285.45      |
 | 2      | Carmen Morales      | Japan  | Carmen.Morales.2@gmail.com | 290.24              | Euro, Japanese Yen            | 134.44                   | 67246.43                      |
 | 3      | Sofía Ruiz          | Spain  | Sofia.Ruiz.3@gmail.com     | 0.00                | Ninguna                       | 0.00                     | 0.00                          |
 | 4      | Andrés Ramos        | France | Andrés.Ramos.4@gmail.com   | 167.87              | Euro                          | 181.85                   | 90961.34                      |
