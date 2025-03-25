@@ -135,7 +135,7 @@ WITH UserActivityMenosUso AS (
 -- CONSULTA 4.4
 -- ---------------------
 
--- variables que definen el rango de fechas
+-- variables que definen el rango de fechas estas deben ser ejecutadas
 SET @fechaInicio = '2025-01-01';
 SET @fechaFinal = '2025-03-01';
 
